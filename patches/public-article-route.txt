@@ -1,0 +1,18 @@
+STEP 15 PATCH — PUBLIC ARTICLE
+
+1. Replace the previous public ArticleController with:
+   app/Http/Controllers/ArticleController.php
+
+2. Replace the public article routes with:
+   routes/articles-public.php
+
+3. Copy:
+   resources/views/articles/studio-render.blade.php
+   public/studio/layouts.css
+   public/studio/themes.css
+
+IMPORTANT:
+- The previous show.blade.php wrapped studio-render inside layouts.articles.
+- This step removes that nested-document structure.
+- /artikel/{slug} now renders the Studio document directly as the public page.
+- Published_at and status rules remain enforced.

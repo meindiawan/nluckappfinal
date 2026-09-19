@@ -1,0 +1,10 @@
+/.phpunit.cache
+/vendor
+/node_modules
+/public/build
+/storage/*.key
+/storage/app/public
+.env
+.env.*
+!.env.example
+.phpunit.result.cache

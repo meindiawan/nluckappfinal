@@ -1,0 +1,30 @@
+STEP 12 — PATCH ArticleController@index
+
+Ganti method index() lama dengan:
+
+public function index(Request $request){
+    $q = $request->string('q')->trim()->toString();
+    $status = $request->string('status')->trim()->toString();
+    $featured = $request->has('featured') ? $request->string('featured')->toString() : '';
+
+    $articles = Article::query()
+        ->when($q, fn($x) => $x->where(fn($w) => $w
+            ->where('title','like',"%$q%")
+            ->orWhere('slug','like',"%$q%")
+            ->orWhere('excerpt','like',"%$q%")
+        ))
+        ->when(in_array($status, ['draft','published'], true), fn($x) => $x->where('status',$status))
+        ->when($featured === '1', fn($x) => $x->where('featured',true))
+        ->when($featured === '0', fn($x) => $x->where('featured',false))
+        ->orderByDesc('featured')
+        ->orderBy('sort_order')
+        ->latest()
+        ->paginate(12)
+        ->withQueryString();
+
+    return view('admin.articles.index', compact('articles','q'));
+}
+
+Catatan:
+- Jangan membuat route index baru jika resource articles sudah ada.
+- Cukup ganti method index() pada ArticleController yang sudah ada.

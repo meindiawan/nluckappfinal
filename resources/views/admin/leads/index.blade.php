@@ -1,0 +1,12 @@
+@extends('layouts.admin')
+@section('title','Customer Leads')
+@push('styles')<link rel="stylesheet" href="{{ asset('admin-assets/leads/leads.css') }}">@endpush
+@section('content')
+<div class="lead-page">
+ <div class="lead-head"><div><div class="eyebrow">CUSTOMER DATA</div><h1>Customer Leads</h1><p>Kelola pelanggan yang masuk dari artikel NLUCK.</p></div><a class="btn primary" href="{{ route('admin.leads.export', request()->query()) }}">Export CSV</a></div>
+ <div class="stats"><div><b>{{ number_format($stats['total']) }}</b><span>Total Leads</span></div><div><b>{{ number_format($stats['today']) }}</b><span>Hari Ini</span></div><div><b>{{ number_format($stats['new']) }}</b><span>Belum Diproses</span></div><div><b>{{ number_format($stats['this_month']) }}</b><span>Bulan Ini</span></div></div>
+ <form class="filters" method="get"><input name="q" value="{{ request('q') }}" placeholder="Cari nama, WhatsApp, email, kota..."><select name="article_id"><option value="">Semua artikel</option>@foreach($articles as $article)<option value="{{ $article->id }}" @selected(request('article_id')==$article->id)>{{ $article->title }}</option>@endforeach</select><select name="status"><option value="">Semua status</option>@foreach(['new'=>'Baru','contacted'=>'Dihubungi','qualified'=>'Qualified','closed'=>'Selesai'] as $v=>$label)<option value="{{ $v }}" @selected(request('status')===$v)>{{ $label }}</option>@endforeach</select><input type="date" name="from" value="{{ request('from') }}"><input type="date" name="to" value="{{ request('to') }}"><button class="btn">Filter</button><a class="reset" href="{{ route('admin.leads.index') }}">Reset</a></form>
+ <div class="table-wrap"><table><thead><tr><th>Pelanggan</th><th>WhatsApp</th><th>Artikel</th><th>Masuk</th><th>Status</th><th></th></tr></thead><tbody>@forelse($leads as $lead)<tr><td><a class="person" href="{{ route('admin.leads.show',$lead) }}"><strong>{{ $lead->name }}</strong><small>{{ $lead->email ?: 'Email tidak diisi' }}</small></a></td><td>{{ $lead->whatsapp }}</td><td>{{ $lead->article?->title ?: '-' }}</td><td>{{ $lead->created_at->format('d M Y H:i') }}</td><td><span class="status {{ $lead->status }}">{{ ucfirst($lead->status) }}</span></td><td><a class="more" href="{{ route('admin.leads.show',$lead) }}">Detail →</a></td></tr>@empty<tr><td colspan="6" class="empty">Belum ada lead yang cocok.</td></tr>@endforelse</tbody></table></div>
+ <div class="pager">{{ $leads->links() }}</div>
+</div>
+@endsection

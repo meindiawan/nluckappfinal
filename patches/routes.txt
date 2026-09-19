@@ -1,0 +1,4 @@
+Tambahkan di routes/web.php:
+require base_path('routes/article-form-settings.php');
+
+Pastikan route STEP 21 dan STEP 20 tetap terdaftar.

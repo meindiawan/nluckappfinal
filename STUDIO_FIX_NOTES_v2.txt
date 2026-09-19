@@ -1,0 +1,114 @@
+NLUCK STUDIO — PERBAIKAN: PEMISAHAN MODE & RESPONSIF HP
+========================================================
+(Lanjutan dari STUDIO_FIX_NOTES.txt sebelumnya — hanya 3 file ini yang berubah)
+
+CARA PAKAI
+----------
+Timpa 3 file di project Laravel kamu dengan file di paket ini (path sama persis):
+  public/studio/index.html
+  public/studio/admin.html
+  resources/views/articles/studio-render.blade.php
+
+Tidak perlu migrasi database, tidak perlu composer install ulang — struktur
+data desain (design.mode, design.canvas, dst.) tidak berubah, cuma perilaku
+tampilan yang diperbaiki. Setelah replace, jalankan:
+  php artisan optimize:clear
+lalu refresh Studio di browser (hard refresh / Ctrl+Shift+R supaya cache
+lama index.html & admin.html tidak kepakai).
+
+
+A. BUG DIPERBAIKI — "Kanvas Kosong" ikut nempel ke Desain
+-----------------------------------------------------------
+Sebelumnya: panel Kanvas Bebas (#freeCanvasPanel) selalu ditampilkan setiap
+kali sedang mengedit di Studio, TIDAK PEDULI mode yang dipilih "Ikuti
+Template" atau "Kanvas Kosong". Akibatnya box "Kreasi Bebas" selalu muncul
+menempel di bawah artikel bertemplate lengkap — kelihatan seperti "join",
+padahal seharusnya dua pilihan terpisah.
+
+Sekarang: panel Kanvas Bebas HANYA pernah muncul kalau mode aktifnya betul-
+betul "Kanvas Kosong" — baik saat mengedit di Studio maupun di halaman
+artikel publik. Kalau mode "Desain" yang aktif, panel ini tidak pernah
+dirender sama sekali (bukan cuma disembunyikan lewat CSS, tapi juga logic-
+nya di JavaScript). Dua mode ini sekarang benar-benar dua jalur terpisah,
+seperti memilih "Blank Document" vs Template Gallery di Microsoft Word.
+
+Diimplementasikan di:
+  - public/studio/index.html      → fungsi renderCanvas(), sekarang mengecek
+    document.documentElement.dataset.studioMode sebelum menampilkan panel
+  - resources/views/articles/studio-render.blade.php → sama, versi read-only
+
+
+B. TAMPILAN BARU — Pemilihan "Jenis Halaman" di awal
+-----------------------------------------------------
+Sebelumnya mode dipilih lewat tab kecil ("Ikuti Template" / "Kanvas Kosong")
+yang gampang kelewat. Sekarang jadi dua kartu besar di paling atas sidebar
+Studio (section "Jenis Halaman"), masing-masing dengan ikon & deskripsi
+singkat, supaya jelas ini keputusan awal — bukan sekadar toggle biasa.
+
+Saat kartu "Kanvas Kosong" dipilih:
+  - Tab sidebar "Design" & "Konten" otomatis disembunyikan (karena tidak
+    relevan — tidak ada template yang dipakai)
+  - Tab "Kanvas" otomatis jadi satu-satunya tab yang tampil & aktif
+Saat kartu "Desain" dipilih: kebalikannya — tab "Kanvas" disembunyikan,
+tab "Design"/"Konten" yang tampil.
+
+Diimplementasikan di: public/studio/admin.html (fungsi applyModeVisibility(),
+dipanggil dari setMode() dan syncCanvasUI())
+
+
+C. FITUR BARU — "Blok Siap Pakai" di tab Kanvas
+-------------------------------------------------
+Supaya lebih gampang "bikin hero dll" dari nol di Kanvas Kosong (bukan
+cuma tambah elemen satu-satu), sekarang ada 2 tombol blok instan di tab
+Kanvas → section "Blok siap pakai":
+
+  + Blok Hero   → menambahkan 3 elemen sekaligus, tersusun rapi:
+                  gambar full-width di atas, judul besar di tengah,
+                  teks pembuka di bawahnya. Langsung buka Media Library
+                  untuk pasang foto heronya.
+  + Blok Judul  → menambahkan 2 elemen: judul (kiri) + paragraf di
+                  bawahnya, siap diedit teksnya.
+
+Setelah ditambahkan, semua elemen dalam blok ini adalah elemen kanvas biasa
+— bisa digeser, diubah ukuran, ganti warna/font, dihapus, sama seperti
+elemen yang ditambah satu-satu. Tombol tambah elemen satuan (Gambar, Kotak,
+Lingkaran, Teks) tetap ada di bawahnya untuk kreasi manual penuh.
+
+Diimplementasikan di: public/studio/admin.html (fungsi addHeroBlock(),
+addTitleBlock())
+
+
+D. RESPONSIF — perbaikan tampilan di HP
+------------------------------------------
+1. Dekorasi bunga di section "Tentang Artikel" (.about-grid .deco) sekarang
+   ikut disembunyikan di layar ≤860px — sebelumnya cuma dekorasi bagian doa
+   yang ditangani, dekorasi "Tentang Artikel" dibiarkan apa adanya dan bisa
+   terlihat aneh (melebar penuh) di tablet/HP.
+2. Ditambahkan pengaman anti-overflow: min-width:0 di semua kolom grid
+   (about-grid, pesan-grid, society-grid, doa-item, dan children langsung
+   .wrap) + overflow-wrap:break-word di judul/paragraf — mencegah teks atau
+   elemen grid "meluber" ke luar layar di HP kecil.
+3. Beberapa ukuran font yang sebelumnya fixed-px (judul about/pesan/society,
+   teks Arab di doa, angka welcome-card) diubah jadi clamp() — menyesuaikan
+   lebar layar secara halus, bukan cuma lompat di titik breakpoint tertentu.
+4. Breakpoint tambahan di 360px untuk HP yang sangat kecil.
+5. html,body diberi overflow-x:hidden + img/svg max-width:100% sebagai
+   pengaman terakhir dari scroll horizontal tak terduga.
+6. Semua perbaikan ini diterapkan identik di public/studio/index.html
+   (preview Studio) DAN studio-render.blade.php (halaman publik) supaya
+   keduanya tetap sinkron — apa yang terlihat saat mengedit = apa yang
+   dilihat pengunjung.
+
+
+CATATAN
+-------
+Perbaikan ini sudah dicek sintaksnya (JavaScript & struktur HTML), tapi
+belum sempat diuji langsung di browser/HP fisik dari sisi saya karena
+project ini jalan di localhost kamu. Setelah replace file, tolong dicek:
+  1. Pilih "Kanvas Kosong" → pastikan hero/tentang/doa/pesan template
+     benar-benar hilang, hanya logo + kanvas + (opsional) form society.
+  2. Coba "+ Blok Hero" → pastikan 3 elemen muncul & bisa digeser.
+  3. Buka Preview, lalu perkecil lebar browser (atau buka dari HP asli)
+     untuk cek tampilan di layar sempit.
+Kalau masih ada bagian yang kurang pas, kirim screenshot-nya lagi ya —
+saya lanjutkan perbaikannya.

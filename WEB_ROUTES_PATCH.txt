@@ -1,0 +1,4 @@
+In routes/web.php add:
+require __DIR__.'/articles.php';
+
+If your existing web.php already has an admin middleware/prefix group, you can instead copy the routes from routes/articles.php into that group and remove the duplicate middleware/prefix.

@@ -1,0 +1,124 @@
+/* ============================================================
+   NLUCK ARTIKEL — LAYOUT PRESETS (bagian "Doa Spesial")
+   Cara pakai: set atribut data-layout pada .doa-list, misal:
+   <div class="doa-list" data-layout="cards"> ... </div>
+   Markup .doa-item TIDAK BERUBAH untuk ketiga layout — semua
+   diatur lewat CSS di sini, jadi 1 data doa bisa tampil beda
+   cukup ganti data-layout, tanpa tulis ulang konten.
+   ============================================================ */
+
+/* ---------------------------------------------------------
+   1) ROWS — pita horizontal (default, gaya artikel panjang)
+   Nomor + ikon di kiri, arabic+terjemahan di tengah,
+   ilustrasi kecil di kanan. Cocok untuk nuansa formal/khidmat.
+   Style dasarnya sudah ada di index.html; blok ini cuma
+   memastikan tidak ada sisa style dari layout lain yang nempel.
+--------------------------------------------------------- */
+.doa-list[data-layout="rows"]{ display:block; }
+.doa-list[data-layout="rows"] .doa-item{
+  display:grid; grid-template-columns:150px 1fr 130px;
+  text-align:left; padding-top:0; border-radius:6px;
+}
+.doa-list[data-layout="rows"] .doa-num-block{
+  flex-direction:column; align-items:flex-start; gap:10px;
+  padding:18px 16px; border-bottom:none; margin-bottom:0;
+}
+.doa-list[data-layout="rows"] .doa-num-block .num{
+  width:auto; height:auto; border:none; border-radius:0; background:transparent;
+  font-size:22px; justify-content:flex-start;
+}
+.doa-list[data-layout="rows"] .doa-body{ text-align:left; padding:18px 20px; }
+.doa-list[data-layout="rows"] .doa-item::before{ content:none; }
+
+/* ---------------------------------------------------------
+   2) CARDS — 3 kolom kartu mengambang, badge nomor di atas
+   garis kartu. Gaya ini yang dipakai di contoh Azure Mist /
+   Marble Serenity / Arctic Serenity. Cocok untuk nuansa
+   galeri/koleksi, tampil "ringan" di atas artwork latar tema.
+--------------------------------------------------------- */
+.doa-list[data-layout="cards"]{
+  display:grid; grid-template-columns:repeat(3, 1fr); gap:22px;
+  align-items:start;
+}
+.doa-list[data-layout="cards"] .doa-item{
+  display:block; grid-template-columns:none; overflow:visible;
+  background:var(--panel); border:1px solid var(--line); border-radius:16px;
+  padding-top:22px; margin-bottom:0; text-align:center;
+  box-shadow:0 10px 26px rgba(0,0,0,.05);
+}
+.doa-list[data-layout="cards"] .doa-num-block{
+  background:transparent; color:var(--dark);
+  flex-direction:column; align-items:center; gap:8px;
+  padding:0 18px 16px; border-bottom:1px solid var(--line); margin-bottom:16px;
+}
+.doa-list[data-layout="cards"] .doa-num-block .num{
+  width:36px; height:36px; border-radius:50%;
+  border:1px solid var(--accent); background:var(--panel); color:var(--dark);
+  display:flex; align-items:center; justify-content:center;
+  font-size:14px;
+}
+.doa-list[data-layout="cards"] .doa-num-block .icon-slot{ width:22px; height:22px; }
+.doa-list[data-layout="cards"] .doa-num-block .label{
+  font-size:10.5px; text-align:center; color:var(--dark);
+}
+.doa-list[data-layout="cards"] .doa-body{ text-align:center; padding:0 20px 26px; }
+.doa-list[data-layout="cards"] .doa-body .arabic{ font-size:19px; }
+.doa-list[data-layout="cards"] .doa-deco{ display:none; }
+
+@media (max-width:860px){
+  .doa-list[data-layout="cards"]{ grid-template-columns:1fr; }
+}
+
+/* ---------------------------------------------------------
+   3) MANUSCRIPT — garis waktu vertikal, editorial/minimal.
+   Nomor jadi simpul kecil di garis (dihasilkan CSS counter,
+   bukan duplikat teks), judul jadi header tipis di atas setiap
+   doa. Cocok untuk nuansa jurnal pribadi / surat / naskah.
+   Paling berbeda dari dua layout lain — pilihan paling "berani".
+--------------------------------------------------------- */
+.doa-list[data-layout="manuscript"]{
+  display:block; position:relative; padding-left:38px;
+  counter-reset:doa;
+}
+.doa-list[data-layout="manuscript"]::before{
+  content:''; position:absolute; left:13px; top:6px; bottom:6px;
+  width:1px; background:var(--line);
+}
+.doa-list[data-layout="manuscript"] .doa-item{
+  display:block; grid-template-columns:none; overflow:visible;
+  background:transparent; border:none; border-radius:0;
+  padding:0 0 30px; margin-bottom:0; position:relative;
+  counter-increment:doa;
+}
+.doa-list[data-layout="manuscript"] .doa-item::before{
+  content:counter(doa, decimal-leading-zero);
+  position:absolute; left:-38px; top:2px;
+  width:28px; height:28px; border-radius:50%;
+  background:var(--dark); color:var(--badge-text);
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Cormorant Garamond', serif; font-size:12px;
+}
+.doa-list[data-layout="manuscript"] .doa-num-block{
+  flex-direction:row; align-items:center; gap:10px;
+  background:transparent; color:var(--dark);
+  padding:0 0 10px; border-bottom:1px solid var(--line); margin-bottom:14px;
+}
+.doa-list[data-layout="manuscript"] .doa-num-block .num{ display:none; }
+.doa-list[data-layout="manuscript"] .doa-num-block .icon-slot{ width:20px; height:20px; }
+.doa-list[data-layout="manuscript"] .doa-num-block .label{
+  font-size:12px; letter-spacing:.06em;
+}
+.doa-list[data-layout="manuscript"] .doa-body{ text-align:left; padding:0; max-width:640px; }
+.doa-list[data-layout="manuscript"] .doa-body .arabic{ font-size:22px; }
+.doa-list[data-layout="manuscript"] .doa-item:nth-child(even) .doa-body{ margin-left:24px; }
+.doa-list[data-layout="manuscript"] .doa-deco{ display:none; }
+
+/* ---------- Extended article compositions ---------- */
+.doa-list[data-layout="mosaic"]{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}.doa-list[data-layout="mosaic"] .doa-item{display:block;overflow:hidden;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:24px;margin:0;min-height:250px}.doa-list[data-layout="mosaic"] .doa-item:nth-child(3n){grid-column:1/-1}.doa-list[data-layout="mosaic"] .doa-num-block{background:transparent;color:var(--dark);padding:0 0 12px;display:flex;flex-direction:row;align-items:center;border-bottom:1px solid var(--line)}.doa-list[data-layout="mosaic"] .doa-num-block .num{font-size:16px;color:var(--accent)}.doa-list[data-layout="mosaic"] .doa-body{padding:0;text-align:left}.doa-list[data-layout="mosaic"] .doa-body .arabic{font-size:22px}.doa-list[data-layout="mosaic"] .doa-deco{display:none}
+.doa-list[data-layout="ledger"]{display:block;border-top:2px solid var(--dark)}.doa-list[data-layout="ledger"] .doa-item{display:grid;grid-template-columns:80px 1fr;background:transparent;border:0;border-bottom:1px solid var(--line);border-radius:0;margin:0}.doa-list[data-layout="ledger"] .doa-num-block{background:transparent;color:var(--dark);padding:18px 8px;display:block}.doa-list[data-layout="ledger"] .doa-num-block .icon-slot,.doa-list[data-layout="ledger"] .doa-num-block .label{display:none}.doa-list[data-layout="ledger"] .doa-num-block .num{font-size:18px;color:var(--accent)}.doa-list[data-layout="ledger"] .doa-body{padding:18px 20px}.doa-list[data-layout="ledger"] .doa-deco{display:none}
+.doa-list[data-layout="magazine"]{display:grid;grid-template-columns:repeat(2,1fr);gap:28px}.doa-list[data-layout="magazine"] .doa-item{display:block;background:transparent;border:0;border-top:1px solid var(--dark);border-radius:0;padding:18px 0;margin:0}.doa-list[data-layout="magazine"] .doa-item:nth-child(1){grid-column:1/-1}.doa-list[data-layout="magazine"] .doa-num-block{background:transparent;color:var(--dark);padding:0 0 10px;display:flex;flex-direction:row;align-items:center;gap:10px}.doa-list[data-layout="magazine"] .doa-num-block .num{color:var(--accent);font-size:16px}.doa-list[data-layout="magazine"] .doa-num-block .icon-slot{display:none}.doa-list[data-layout="magazine"] .doa-body{padding:0;text-align:left}.doa-list[data-layout="magazine"] .doa-body .arabic{font-size:21px}.doa-list[data-layout="magazine"] .doa-deco{display:none}
+.doa-list[data-layout="letter"]{max-width:760px;margin:auto;padding:18px 24px;border:1px solid var(--line);background:rgba(255,255,255,.35);border-radius:2px}.doa-list[data-layout="letter"] .doa-item{display:block;background:transparent;border:0;border-bottom:1px dashed var(--line);border-radius:0;padding:20px 0;margin:0}.doa-list[data-layout="letter"] .doa-item:last-child{border-bottom:0}.doa-list[data-layout="letter"] .doa-num-block{background:transparent;color:var(--dark);padding:0 0 8px;display:flex;flex-direction:row;align-items:center}.doa-list[data-layout="letter"] .doa-num-block .num{display:none}.doa-list[data-layout="letter"] .doa-num-block .icon-slot{display:none}.doa-list[data-layout="letter"] .doa-body{padding:0;text-align:left}.doa-list[data-layout="letter"] .doa-deco{display:none}
+.doa-list[data-layout="frame"]{padding:20px;border:1px solid var(--accent);box-shadow:inset 0 0 0 6px var(--panel)}.doa-list[data-layout="frame"] .doa-item{display:block;background:transparent;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:22px;margin:0}.doa-list[data-layout="frame"] .doa-num-block{background:transparent;color:var(--dark);padding:0 0 10px;display:flex;flex-direction:row;align-items:center}.doa-list[data-layout="frame"] .doa-num-block .icon-slot{display:none}.doa-list[data-layout="frame"] .doa-body{padding:0;text-align:left}.doa-list[data-layout="frame"] .doa-deco{display:none}
+.doa-list[data-layout="split"]{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line)}.doa-list[data-layout="split"] .doa-item{display:block;background:var(--panel);border:0;border-bottom:1px solid var(--line);border-radius:0;padding:24px;margin:0}.doa-list[data-layout="split"] .doa-item:nth-child(odd){background:var(--dark);color:#fff}.doa-list[data-layout="split"] .doa-item:nth-child(odd) .doa-num-block,.doa-list[data-layout="split"] .doa-item:nth-child(odd) .doa-body .arabic{color:#fff}.doa-list[data-layout="split"] .doa-num-block{background:transparent;padding:0 0 10px;display:flex;flex-direction:row;align-items:center}.doa-list[data-layout="split"] .doa-num-block .icon-slot{display:none}.doa-list[data-layout="split"] .doa-body{padding:0;text-align:left}.doa-list[data-layout="split"] .doa-deco{display:none}
+.doa-list[data-layout="minimal"]{display:block}.doa-list[data-layout="minimal"] .doa-item{display:block;background:transparent;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:24px 4px;margin:0}.doa-list[data-layout="minimal"] .doa-num-block{background:transparent;padding:0 0 8px;display:flex;flex-direction:row;align-items:center}.doa-list[data-layout="minimal"] .doa-num-block .icon-slot{display:none}.doa-list[data-layout="minimal"] .doa-body{padding:0;text-align:left}.doa-list[data-layout="minimal"] .doa-deco{display:none}
+@media(max-width:860px){.doa-list[data-layout="mosaic"],.doa-list[data-layout="magazine"],.doa-list[data-layout="split"]{grid-template-columns:1fr}.doa-list[data-layout="mosaic"] .doa-item:nth-child(3n){grid-column:auto}}

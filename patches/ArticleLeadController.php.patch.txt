@@ -1,0 +1,24 @@
+STEP 22 — PATCH ArticleLeadController::store
+
+Load setting:
+$setting = \App\Models\ArticleFormSetting::current();
+
+Buat rules dinamis:
+$rules = [
+ 'name' => ['required','string','max:120'],
+ 'whatsapp' => ['required','string','max:30','regex:/^[0-9+()\-\s.]{8,30}$/'],
+ 'email' => [$setting->show_email && $setting->require_email ? 'required' : 'nullable','email','max:150'],
+ 'birth_date' => [$setting->show_birth_date && $setting->require_birth_date ? 'required' : 'nullable','date','before:today'],
+ 'city' => [$setting->show_city && $setting->require_city ? 'required' : 'nullable','string','max:100'],
+ 'instagram' => [$setting->show_instagram && $setting->require_instagram ? 'required' : 'nullable','string','max:100'],
+ 'consent' => [$setting->require_consent ? 'accepted' : 'nullable'],
+];
+
+Sebelum validate, jika field disembunyikan, hapus nilainya:
+foreach (['email','birth_date','city','instagram'] as $field) {
+ if (! $setting->{'show_'.$field}) $request->merge([$field => null]);
+}
+
+$request->validate($rules);
+
+Tetap pertahankan normalisasi nomor, article_id, consent, IP/session, dan redirect sukses dari STEP 21.

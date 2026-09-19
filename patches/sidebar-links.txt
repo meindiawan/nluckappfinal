@@ -1,0 +1,9 @@
+STEP 13 — OPSIONAL: sidebar admin
+
+Tambahkan menu Artikel:
+<a href="{{ route('admin.articles.index') }}">Artikel</a>
+
+Jika route Media Library sudah dipasang dari STEP 7/8, tambahkan:
+<a href="{{ route('admin.media.index') }}">Media Library</a>
+
+Jangan mengubah route Dashboard, Produk, atau Pengaturan Akun yang sudah ada.

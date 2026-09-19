@@ -1,0 +1,5 @@
+Tambahkan menu pada resources/views/layouts/admin.blade.php:
+<a href="{{ route('admin.form-settings.edit') }}">Form Artikel</a>
+
+Sebaiknya diletakkan di area pengaturan/konversi, dekat menu WhatsApp.
+Pastikan layout memuat @stack('styles') di <head>.

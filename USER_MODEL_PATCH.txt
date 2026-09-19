@@ -1,0 +1,13 @@
+Buka: app/Models/User.php
+
+Pastikan field "username" ada di $fillable, contoh:
+
+protected $fillable = [
+    'name',
+    'username',
+    'email',
+    'password',
+];
+
+Jika project Laravel baru Anda memakai method casts(), biarkan konfigurasi password yang sudah ada.
+Tidak perlu membuat hash manual di model untuk kode ini karena seeder dan AccountController sudah memakai Hash::make().

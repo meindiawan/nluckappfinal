@@ -1,0 +1,17 @@
+Jika Anda tidak ingin mengganti seluruh ArticleController Step 4, ambil method berikut dari controller STEP 9:
+- studio()
+- studioData()
+- studioSave()
+- unpublish()
+- preview()
+
+Pastikan studioSave menerima validation:
+'design' => ['required','array'],
+'action' => ['nullable','in:draft,publish']
+
+Pastikan route name tetap:
+admin.articles.studio
+aadmin.articles.studio.data
+admin.articles.studio.save
+admin.articles.unpublish
+admin.articles.preview

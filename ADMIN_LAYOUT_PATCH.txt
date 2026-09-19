@@ -1,0 +1,2 @@
+Pastikan resources/views/layouts/admin.blade.php dari STEP 1/2 memiliki @yield('content') di area konten.
+CSS boleh ditambahkan dari ADMIN_ARTICLE_CSS.txt.

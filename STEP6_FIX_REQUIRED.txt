@@ -1,0 +1,9 @@
+Sebelum/ketika menggabungkan Step 6:
+1. Di resources/views/admin/dashboard.blade.php ubah:
+   route('admin.account')
+   menjadi:
+   route('admin.account.edit')
+
+2. Di resources/views/layouts/admin.blade.php, di dalam <head>, tambahkan:
+   @stack('styles')
+   agar CSS dashboard Step 6 yang memakai @push('styles') benar-benar dimuat.

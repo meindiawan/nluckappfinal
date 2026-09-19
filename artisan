@@ -1,0 +1,12 @@
+#!/usr/bin/env php
+<?php
+use Illuminate\Foundation\Application;
+use Symfony\Component\Console\Input\ArgvInput;
+
+require __DIR__.'/vendor/autoload.php';
+
+$app = require_once __DIR__.'/bootstrap/app.php';
+$kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
+$status = $kernel->handle(new ArgvInput);
+$kernel->terminate(new ArgvInput, $status);
+exit($status);

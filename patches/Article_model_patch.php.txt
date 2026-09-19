@@ -1,0 +1,13 @@
+Tambahkan ke App\Models\Article:
+
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+public function leads(): HasMany
+{
+    return $this->hasMany(\App\Models\ArticleLead::class);
+}
+
+public function views(): HasMany
+{
+    return $this->hasMany(\App\Models\ArticleView::class);
+}

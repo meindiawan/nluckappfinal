@@ -1,0 +1,29 @@
+STEP 22 — PATCH studio-render.blade.php
+
+1. Tambahkan di bagian atas Blade:
+   @php($formSetting = \App\Models\ArticleFormSetting::current())
+
+2. Pada blok form pelanggan, gunakan $formSetting untuk teks:
+   - Judul: {{ $formSetting->title }}
+   - Deskripsi: {{ $formSetting->description }}
+   - CTA: {{ $formSetting->cta_text }}
+   - consent: {{ $formSetting->consent_text }}
+
+3. Render field secara kondisional:
+   - show_name
+   - show_whatsapp
+   - show_email
+   - show_birth_date
+   - show_city
+   - show_instagram
+
+4. Required dinamis:
+   email required jika require_email
+   birth_date required jika require_birth_date
+   city required jika require_city
+   instagram required jika require_instagram
+   consent required jika require_consent
+
+Nama dan WhatsApp tetap wajib karena menjadi data inti lead.
+
+Catatan: jangan menghapus class/design Studio yang sudah ada; hanya ubah isi/visibility field.

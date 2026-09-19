@@ -1,0 +1,17 @@
+STEP 20 PATCH — analytics funnel WhatsApp
+
+Tambahkan setelah totalLeads:
+
+$totalWhatsappClicks = (clone $leads)->whereNotNull('whatsapp_clicked_at')->count();
+$formToWhatsapp = $totalLeads ? round(($totalWhatsappClicks / $totalLeads) * 100, 2) : 0;
+$viewToWhatsapp = $totalViews ? round(($totalWhatsappClicks / $totalViews) * 100, 2) : 0;
+
+Untuk top articles, tambahkan count klik dengan pola:
+
+->withCount(['leads as whatsapp_clicks_count' => fn($q) =>
+    $q->whereBetween('created_at', [$from, $to])->whereNotNull('whatsapp_clicked_at')
+])
+
+Lalu:
+$a->whatsapp_conversion = $a->views_count
+    ? round(($a->whatsapp_clicks_count / $a->views_count) * 100, 2) : 0;

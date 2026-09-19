@@ -1,0 +1,11 @@
+STEP 14 — PATCH LAYOUT ADMIN
+
+Tambahkan satu baris ini di <head> resources/views/layouts/admin.blade.php:
+
+<link rel="stylesheet" href="{{ asset('admin/studio/studio-shell.css') }}">
+
+Jika dashboard.css/media.css/article CSS menggunakan @push('styles'), pastikan juga ada:
+
+@stack('styles')
+
+Letakkan sebelum </head>.

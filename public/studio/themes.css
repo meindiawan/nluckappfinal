@@ -1,0 +1,101 @@
+/* ============================================================
+   NLUCK ARTIKEL — THEME PRESETS
+   Cara pakai: set atribut data-theme pada <html>, misal:
+   <html data-theme="azure-mist">
+   Tambah tema baru = tinggal tambah 1 blok baru di bawah,
+   tidak perlu ubah index.html sama sekali.
+   ============================================================ */
+
+:root,
+[data-theme="infinia"]{
+  --bg: #F7F2EA;
+  --panel: rgba(251,248,243,.92);
+  --dark: #4A2E2C;      /* warna gelap: judul besar, blok nomor doa, footer */
+  --ink: #4A3F3A;        /* teks body */
+  --ink-soft: #7A6E67;   /* teks sekunder / terjemahan */
+  --accent: #A9814F;     /* aksen emas: label, divider, tagline */
+  --line: #E4D9C9;       /* garis/border tipis */
+  --badge-text: #D7B98A;
+  --backdrop-tint: radial-gradient(circle at 15% 20%, #EFE3CF 0%, transparent 45%),
+                   radial-gradient(circle at 85% 80%, #E7D6BC 0%, transparent 45%);
+}
+
+[data-theme="azure-mist"]{
+  --bg: #F2F6F9;
+  --panel: rgba(255,255,255,.90);
+  --dark: #35506B;
+  --ink: #3E4C58;
+  --ink-soft: #7C8D9A;
+  --accent: #B08A55;
+  --line: #D3E1EA;
+  --badge-text: #6E93AE;
+  --backdrop-tint: radial-gradient(circle at 8% 15%, #CFE0EC 0%, transparent 42%),
+                   radial-gradient(circle at 92% 20%, #DCEAF3 0%, transparent 40%),
+                   radial-gradient(circle at 90% 90%, #C9DCE9 0%, transparent 45%);
+}
+
+[data-theme="marble-serenity"]{
+  --bg: #ECE8E2;
+  --panel: rgba(251,250,248,.92);
+  --dark: #2E2C30;
+  --ink: #3A3A3E;
+  --ink-soft: #837B6E;
+  --accent: #B9975B;
+  --line: #DCD2BE;
+  --badge-text: #C7A868;
+  --backdrop-tint: radial-gradient(circle at 10% 10%, #DCD5C8 0%, transparent 40%),
+                   radial-gradient(circle at 95% 15%, #E4DCC8 0%, transparent 40%),
+                   radial-gradient(circle at 85% 92%, #D6CDBA 0%, transparent 45%);
+}
+
+[data-theme="arctic-serenity"]{
+  --bg: #E9F2F9;
+  --panel: rgba(255,255,255,.90);
+  --dark: #1F3A56;
+  --ink: #33475A;
+  --ink-soft: #6C8598;
+  --accent: #5C8FB8;
+  --line: #C9DEEC;
+  --badge-text: #BFD8EA;
+  --backdrop-tint: radial-gradient(circle at 12% 12%, #D3E6F4 0%, transparent 42%),
+                   radial-gradient(circle at 90% 10%, #E4F0F8 0%, transparent 40%),
+                   radial-gradient(circle at 88% 92%, #CDE3F1 0%, transparent 45%);
+}
+
+/* ---- shared mechanics (tidak berubah antar tema) ---- */
+html{ background:var(--bg); }
+body{ background:var(--bg); color:var(--ink); }
+
+.theme-backdrop{
+  position:fixed; inset:0; z-index:-1;
+  background:var(--backdrop-tint), var(--bg);
+}
+/* Slot untuk artwork tema (upload SEKALI per tema — dipakai di semua artikel bertema itu) */
+.theme-backdrop .asset-slot{ position:absolute; inset:0; opacity:.6; border:none; }
+
+.panel{ backdrop-filter: blur(2px); }
+.doa-num-block .num{ color:var(--badge-text); }
+
+/* ---- toolbar preview tema (HANYA untuk demo di browser ini, hapus saat dipasang di admin) ---- */
+.theme-demo-bar{
+  position:fixed; top:14px; right:14px; z-index:50;
+  display:flex; gap:6px; background:rgba(255,255,255,.9);
+  padding:6px; border-radius:20px; box-shadow:0 4px 14px rgba(0,0,0,.12);
+  font-family:'Poppins',sans-serif;
+}
+.theme-demo-bar button{
+  border:none; cursor:pointer; padding:7px 12px; border-radius:16px;
+  font-size:11px; font-weight:500; background:transparent; color:#555;
+}
+.theme-demo-bar button.active{ background:#2E2C30; color:#fff; }
+.theme-demo-bar .demo-bar-label{ font-size:10px; color:#999; padding:0 4px 0 8px; align-self:center; white-space:nowrap; }
+
+/* ---------- Extended premium palettes ---------- */
+[data-theme="rosewood-blush"]{--bg:#f5ece9;--panel:rgba(255,250,249,.93);--dark:#533536;--ink:#554441;--ink-soft:#8b7772;--accent:#9a655f;--line:#ead8d4;--badge-text:#cfa29b;--backdrop-tint:radial-gradient(circle at 12% 12%,#ecd7d2 0,transparent 42%),radial-gradient(circle at 88% 80%,#e7d4d1 0,transparent 44%)}
+[data-theme="jade-emerald"]{--bg:#edf3ee;--panel:rgba(250,253,250,.93);--dark:#25473b;--ink:#3d5149;--ink-soft:#72867e;--accent:#4f806c;--line:#d4e2da;--badge-text:#a9c8ba;--backdrop-tint:radial-gradient(circle at 10% 10%,#d8e8df 0,transparent 42%),radial-gradient(circle at 88% 88%,#d4e4d9 0,transparent 45%)}
+[data-theme="sahara-dune"]{--bg:#f4eee2;--panel:rgba(255,252,246,.93);--dark:#493c2e;--ink:#5c5146;--ink-soft:#8b7d6c;--accent:#b08a58;--line:#e7dac5;--badge-text:#d4b789;--backdrop-tint:radial-gradient(circle at 15% 15%,#ead9bc 0,transparent 45%),radial-gradient(circle at 85% 85%,#e8dcc9 0,transparent 45%)}
+[data-theme="lavender-mist"]{--bg:#f1edf5;--panel:rgba(253,251,255,.94);--dark:#41384d;--ink:#554d5d;--ink-soft:#887e91;--accent:#8a779d;--line:#dfd5e6;--badge-text:#c1b1cc;--backdrop-tint:radial-gradient(circle at 12% 15%,#e4dced 0,transparent 44%),radial-gradient(circle at 90% 88%,#ddd5e8 0,transparent 45%)}
+[data-theme="plum-velvet"]{--bg:#f0e9ef;--panel:rgba(252,248,252,.94);--dark:#382738;--ink:#514351;--ink-soft:#877788;--accent:#79536f;--line:#dfd0dc;--badge-text:#c8a7be;--backdrop-tint:radial-gradient(circle at 12% 15%,#e4d4e0 0,transparent 44%),radial-gradient(circle at 90% 80%,#e0d1dd 0,transparent 45%)}
+[data-theme="sage-botanical"]{--bg:#edf1e9;--panel:rgba(250,252,248,.94);--dark:#344133;--ink:#465244;--ink-soft:#7b8678;--accent:#718267;--line:#d7dfd1;--badge-text:#b3c0a9;--backdrop-tint:radial-gradient(circle at 10% 15%,#dce6d6 0,transparent 44%),radial-gradient(circle at 88% 85%,#d7e0d0 0,transparent 45%)}
+[data-theme="blush-ivory"]{--bg:#f7efed;--panel:rgba(255,252,251,.95);--dark:#503a38;--ink:#5c4b49;--ink-soft:#907c79;--accent:#b88984;--line:#eadad7;--badge-text:#d7b2ae;--backdrop-tint:radial-gradient(circle at 10% 10%,#efdcda 0,transparent 45%),radial-gradient(circle at 90% 90%,#ecd8d5 0,transparent 45%)}
+[data-theme="onyx-gold"]{--bg:#e9e7e2;--panel:rgba(250,249,246,.94);--dark:#242421;--ink:#3e3e39;--ink-soft:#77766d;--accent:#b48b4d;--line:#d8d4ca;--badge-text:#d2b47f;--backdrop-tint:radial-gradient(circle at 15% 15%,#ddd9ce 0,transparent 42%),radial-gradient(circle at 90% 85%,#d9d4c7 0,transparent 44%)}

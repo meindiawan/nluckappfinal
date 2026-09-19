@@ -1,0 +1,10 @@
+Buka: database/seeders/DatabaseSeeder.php
+
+Tambahkan pemanggilan seeder ini di method run():
+
+$this->call([
+    AdminUserSeeder::class,
+]);
+
+Pastikan di bagian atas file ada namespace Database\Seeders; seperti bawaan Laravel.
+Karena AdminUserSeeder berada di namespace yang sama, tidak perlu import tambahan.

@@ -1,0 +1,80 @@
+NLUCK STUDIO - FUNCTIONAL FIX
+
+Perbaikan utama:
+1. JavaScript Studio tidak lagi berhenti sebelum init karena elemen Media Modal sekarang tersedia sebelum script dijalankan.
+2. Nilai tipografi dinormalisasi sehingga body size, line-height, letter-spacing tidak menjadi NaN.
+3. Template, grading warna, warna aksen, dan background kreatif dirender saat Studio dibuka.
+4. Upload gambar dikembalikan ke panel Design agar selalu terlihat.
+5. Upload gambar sekarang dikirim ke Laravel Media Library (maks. 5 MB JPG/PNG/WebP), bukan hanya data URL/localStorage.
+6. Pilih dari Media Library menggunakan route Laravel yang dikirim dari parent Studio.
+7. Simpan Draft / Terbitkan / Preview / Tutup tetap terhubung ke Laravel.
+8. Data design lama yang berisi null/invalid tidak merusak kontrol Studio.
+
+Setelah mengganti project:
+composer install
+php artisan optimize:clear
+php artisan storage:link
+php artisan serve
+
+Jika storage:link sudah ada, pesan "link already exists" aman diabaikan.
+
+================================================================
+UPDATE LANJUTAN — Kanvas Bebas, Mode Halaman, & perbaikan lain
+================================================================
+
+A. BUG DIPERBAIKI
+1. Logo NLUCK pecah (404) di halaman artikel publik (/artikel/{slug}) dan di
+   halaman Preview admin — src gambar sebelumnya relatif ("assets/...") jadi
+   salah resolve di luar folder /studio/. Sudah diganti pakai asset('studio/assets/...').
+2. Kartu teks hero (kotak "Assalamu'alaikum... Terima kasih") di artikel publik
+   sebelumnya TIDAK punya background sama sekali (beda dari yang terlihat saat
+   mengedit di Studio) — teks bisa sulit dibaca di atas foto. Sudah disamakan
+   dengan tampilan preview Studio (kartu putih transparan + blur).
+3. Hero pakai tinggi tetap (height:340px) sehingga teks yang panjang bisa
+   terpotong di layar kecil — diganti min-height + auto agar mengikuti isi.
+
+B. RESPONSIF (mengikuti ukuran laptop / tablet / HP)
+   Ditambahkan clamp() untuk ukuran font hero + breakpoint tambahan di 640px
+   dan 480px (wrap padding, panel padding, foto pesan, dsb) di index.html
+   (preview Studio) DAN studio-render.blade.php (halaman publik) supaya
+   keduanya konsisten.
+
+C. FITUR BARU — MODE HALAMAN (di sidebar kiri Studio, selalu terlihat di atas)
+   1) "Ikuti Template"  → perilaku seperti sebelumnya: Hero, Tentang Artikel,
+      Doa Spesial, Pesan Untukmu, NLUCK Society (form member) tampil semua.
+   2) "Kanvas Kosong"    → SEMUA section template disembunyikan. Yang tersisa
+      hanya: (a) logo NLUCK di header paling atas — tidak pernah hilang,
+      (b) Kanvas Bebas selebar artikel, benar-benar kosong (tanpa kotak/teks
+      bawaan apa pun) sebagai konten utama, dan (c) opsional form member
+      NLUCK Society di bawahnya (bisa dimatikan lewat toggle "Tampilkan form
+      member").
+   Data disimpan sebagai design.mode ('template'|'blank') dan design.showSociety
+   (boolean) — tidak perlu perubahan database, karena desain disimpan bebas
+   sebagai JSON (lihat Article::design() / ArticleController::studioSave).
+
+D. FITUR BARU — KANVAS BEBAS (tab "Kanvas" di sidebar Studio)
+   Area kosong seukuran artikel. Admin bisa:
+     - Tambah elemen: Gambar, Kotak, Lingkaran, Teks (tombol "+ ...")
+     - Geser & ubah ukuran elemen langsung di preview (drag + handle resize)
+     - Atur warna/latar kotak & lingkaran, radius sudut
+     - Atur isi teks, font, ukuran, warna, perataan, tebal
+     - Atur urutan tumpukan (Depan/Belakang), duplikat, hapus
+     - Atur latar kanvas: transparan atau warna solid, dan tinggi kanvas (px)
+   Semua posisi & ukuran elemen disimpan dalam PERSEN (%), sehingga otomatis
+   menyesuaikan lebar layar (laptop/tablet/HP) tanpa perlu diatur ulang per
+   perangkat. Kanvas kosong (elements:[]) otomatis disembunyikan di artikel
+   publik — tidak akan muncul kotak kosong jika admin belum menambahkan apa pun.
+   Diimplementasikan di:
+     - public/studio/admin.html      → panel kontrol (tab Kanvas)
+     - public/studio/index.html      → rendering + drag/resize di preview Studio
+     - resources/views/articles/studio-render.blade.php → rendering read-only
+       di halaman publik & preview admin (sinkron dengan Studio)
+
+E. PERCANTIK (tanpa mengubah fungsi yang sudah ada)
+   Transisi halus pada tombol/swatch/kartu saat hover di panel Studio.
+
+F. AUDIT WARNA/TEMPLATE (dikonfirmasi bekerja, tidak ada perubahan)
+   12 tema warna, 10 layout tampilan doa, dan 12 background kreatif di
+   admin.html sudah cocok 1:1 dengan definisi CSS-nya (themes.css / layouts.css /
+   style inline) — semua pilihan warna & template sudah berfungsi.
+

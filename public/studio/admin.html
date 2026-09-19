@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>NLUCK Studio — Article Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display&family=Libre+Baskerville:wght@400;700&family=Manrope:wght@300;400;500;600;700&family=Marcellus&family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Raleway:wght@400;500;600;700&family=Spectral:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3f1eb;--panel:#fff;--line:#e6e1d8;--ink:#273126;--muted:#77766f;--accent:#78825b;--dark:#28351f;--shadow:0 16px 50px rgba(36,38,30,.10)}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font:13px/1.5 'DM Sans',sans-serif}button,input,select{font:inherit}.app{height:100vh;display:grid;grid-template-columns:300px minmax(520px,1fr) 330px;overflow:hidden}.sidebar,.inspector{background:#fff;overflow:auto}.sidebar{border-right:1px solid var(--line);padding:20px 16px}.inspector{border-left:1px solid var(--line);padding:20px 16px}.brand{display:flex;align-items:center;gap:10px;padding:4px 8px 20px}.brandmark{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#2e3e25,#9b9c72);color:#fff;display:grid;place-items:center;font-family:Georgia,serif;font-size:18px}.brand b{font:600 18px Georgia,serif;letter-spacing:.06em}.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:.14em;text-transform:uppercase}.nav{display:flex;gap:6px;margin-bottom:16px}.nav button{flex:1;border:1px solid var(--line);background:#faf9f6;padding:9px;border-radius:9px;cursor:pointer}.nav button.active{background:var(--dark);color:#fff;border-color:var(--dark)}.section{border-top:1px solid var(--line);padding:16px 2px}.section:first-of-type{border-top:0}.section h3{font-size:11px;letter-spacing:.13em;text-transform:uppercase;margin:0 0 11px;color:#555b50}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}.swatch,.choice{border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px;cursor:pointer;text-align:left}.swatch{min-height:68px;position:relative;overflow:hidden}.swatch i{display:block;height:30px;border-radius:6px;margin-bottom:7px}.swatch b{font-size:10.5px;font-weight:600}.swatch.active,.choice.active{border:2px solid var(--dark);padding:8px}.choices{display:grid;grid-template-columns:1fr 1fr;gap:7px}.choice{font-size:11px}.choice strong{display:block;font-size:12px}.palette{display:flex;flex-wrap:wrap;gap:7px}.color{width:28px;height:28px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px var(--line);cursor:pointer}.color.active{box-shadow:0 0 0 2px var(--dark)}.fieldrow{display:grid;grid-template-columns:100px 1fr;gap:10px;align-items:center;margin:10px 0}.fieldrow label{font-size:11px;color:var(--muted)}.control{min-width:0;display:grid;grid-template-columns:1fr 48px;gap:8px;align-items:center}input[type=range]{width:100%}select,input[type=text],input[type=number]{width:100%;padding:9px;border:1px solid var(--line);border-radius:8px;background:#fff;outline:none}.value{font-size:10px;color:var(--accent);text-align:right}.toggle{display:flex;justify-content:space-between;align-items:center;padding:8px 0;font-size:11px}.toggle input{accent-color:var(--dark)}.preview{min-width:0;display:flex;flex-direction:column;background:#eceae4}.topbar{height:62px;background:rgba(255,255,255,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 18px;z-index:3}.topbar .title{font-weight:600}.actions{display:flex;gap:7px}.btn{border:1px solid var(--line);background:#fff;padding:9px 13px;border-radius:9px;cursor:pointer}.btn.primary{background:var(--dark);color:#fff;border-color:var(--dark)}.canvas{flex:1;padding:22px;overflow:auto}.frame{max-width:1160px;margin:auto;background:#fff;border-radius:18px;box-shadow:var(--shadow);overflow:hidden;min-height:calc(100vh - 106px)}iframe{display:block;width:100%;height:calc(100vh - 106px);border:0;background:#fff;border-radius:18px}.inspector h2{font:600 20px Georgia,serif;margin:3px 0 4px}.hint{font-size:11px;color:var(--muted);margin:0 0 14px}.tabs{display:flex;gap:5px;margin:14px 0}.tabs button{flex:1;border:0;background:#f3f2ee;padding:8px;border-radius:8px;cursor:pointer;font-size:11px}.tabs button.active{background:var(--dark);color:#fff}.upload{border:1px dashed #c9c4b8;padding:13px;border-radius:10px;background:#fbfaf7}.upload b{display:block;font-size:11px}.upload span{display:block;color:var(--muted);font-size:10px;margin-top:3px}.upload input{margin-top:9px;width:100%}.asset-list{display:grid;gap:7px;margin-top:9px}.asset{border:1px solid var(--line);border-radius:9px;padding:9px;display:flex;align-items:center;gap:9px}.thumb{width:42px;height:42px;border-radius:7px;background:#eee;object-fit:cover}.asset small{display:block;color:var(--muted);font-size:9px}.savebox{position:sticky;bottom:0;background:linear-gradient(transparent,#fff 18%);padding-top:22px;margin-top:16px}.savebox .btn{width:100%;margin-top:7px}.toast{position:fixed;right:20px;bottom:20px;background:#28351f;color:#fff;padding:11px 15px;border-radius:10px;opacity:0;transform:translateY(8px);transition:.25s;pointer-events:none}.toast.show{opacity:1;transform:none}
+@media(max-width:1050px){.app{grid-template-columns:250px minmax(480px,1fr)}.inspector{display:none}}@media(max-width:760px){.app{display:block;height:auto}.sidebar{display:none}.preview{min-height:100vh}.topbar{position:sticky;top:0}.canvas{padding:8px}iframe{height:calc(100vh - 78px)}}
+
+.media-modal{position:fixed;inset:0;background:rgba(20,24,18,.48);backdrop-filter:blur(8px);z-index:99;display:none;align-items:center;justify-content:center;padding:24px}.media-modal.show{display:flex}.media-dialog{width:min(980px,96vw);height:min(720px,90vh);background:#fff;border-radius:18px;box-shadow:0 24px 70px rgba(0,0,0,.22);display:flex;flex-direction:column;overflow:hidden}.media-head{display:flex;align-items:center;gap:10px;padding:16px 18px;border-bottom:1px solid var(--line)}.media-head strong{font-size:15px}.media-search{flex:1;padding:10px 12px;border:1px solid var(--line);border-radius:9px}.media-grid{padding:16px;overflow:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}.media-card{border:1px solid var(--line);border-radius:12px;padding:8px;background:#fff;cursor:pointer;text-align:left}.media-card:hover{border-color:var(--dark);box-shadow:0 6px 18px rgba(0,0,0,.08)}.media-card img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;background:#eee;display:block}.media-card b{display:block;font-size:10px;margin-top:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.media-card small{display:block;color:var(--muted);font-size:9px;margin-top:2px}.media-empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:50px}.media-close{margin-left:auto}
+.mode-cards{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:2px}
+.mode-card{border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:13px 12px;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:6px}
+.mode-card .mc-icon{width:30px;height:30px;border-radius:9px;background:#f3f2ee;display:grid;place-items:center;font-size:15px}
+.mode-card b{font-size:12px;display:block}
+.mode-card span{font-size:10.5px;color:var(--muted);line-height:1.4;display:block}
+.mode-card.active{border-color:var(--dark);border-width:2px;padding:12px 11px;background:#faf9f5}
+.mode-card.active .mc-icon{background:var(--dark);color:#fff}
+.mode-banner{display:flex;align-items:flex-start;gap:8px;background:#f3f2ee;border-radius:9px;padding:10px 11px;margin-top:10px;font-size:10.5px;color:#555b50;line-height:1.5}
+.nav-hidden{display:none!important}
+.swatch,.choice,.btn,.color,.nav button,.asset,.mode-card{transition:box-shadow .15s ease,transform .15s ease,background .15s ease,border-color .15s ease}
+.mode-card:hover{border-color:#cbbf9e;transform:translateY(-1px);box-shadow:0 6px 14px rgba(36,38,30,.07)}
+.btn:hover{background:#f6f4ee;border-color:#cfc7b7}
+.btn.primary:hover{background:#243219;border-color:#243219;box-shadow:0 6px 16px rgba(40,53,31,.25)}
+.swatch:hover,.choice:hover{border-color:#cbbf9e;transform:translateY(-1px);box-shadow:0 6px 14px rgba(36,38,30,.07)}
+.color:hover{transform:scale(1.1)}
+
+/* ---------- BLOK SIAP PAKAI: compact, polished & responsive ---------- */
+.block-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.block-choice{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:5px;min-width:0;min-height:88px;padding:12px 11px;border:1px solid var(--line);border-radius:12px;background:linear-gradient(180deg,#fff,#faf9f6);color:var(--ink);cursor:pointer;text-align:left;box-shadow:0 2px 7px rgba(36,38,30,.035);transition:border-color .15s ease,box-shadow .15s ease,transform .15s ease,background .15s ease}
+.block-choice::before{content:'+';position:absolute;top:10px;right:10px;width:22px;height:22px;border-radius:7px;background:#f1efe8;color:var(--dark);display:grid;place-items:center;font-size:15px;font-weight:500;line-height:1}
+.block-choice strong{display:block;padding-right:28px;font-size:12px;line-height:1.25;font-weight:650;letter-spacing:-.01em}
+.block-choice span{display:block;color:var(--muted);font-size:10px;line-height:1.4;max-width:95%}
+.block-choice:hover{border-color:#cbbf9e;background:#fff;transform:translateY(-1px);box-shadow:0 7px 16px rgba(36,38,30,.08)}
+.block-choice:active{transform:translateY(0);box-shadow:0 3px 8px rgba(36,38,30,.06)}
+.block-choice:focus-visible{outline:2px solid rgba(120,130,91,.35);outline-offset:2px}
+#canvasBlockCount{font-size:10.5px;line-height:1.45;background:#f8f6f1!important;color:#68675f}
+#canvasBlockCount b{color:var(--dark)}
+#canvasPanel .section h3{display:flex;align-items:center;gap:8px}
+#canvasPanel .section h3::before{content:'';width:4px;height:15px;border-radius:3px;background:var(--accent);display:block;flex:none}
+#canvasPanel .section{padding-top:17px;padding-bottom:17px}
+#canvasPanel .hint{line-height:1.55}
+#canvasPanel .grid{gap:8px}
+#canvasPanel .grid .choice{min-height:54px;display:flex;align-items:center;gap:7px;font-size:10.5px;line-height:1.25;background:#fbfaf7}
+#canvasPanel .grid .choice strong{display:inline-grid;place-items:center;width:23px;height:23px;border-radius:7px;background:#f0eee8;color:var(--dark);font-size:15px;font-weight:500;flex:none}
+#canvasPanel .grid .choice:hover{background:#fff}
+@media(max-width:420px){.block-grid{gap:7px}.block-choice{min-height:82px;padding:10px 9px}.block-choice strong{font-size:11px}.block-choice span{font-size:9.5px}.block-choice::before{top:8px;right:8px;width:20px;height:20px}.section{padding-left:1px;padding-right:1px}}
+@media(min-width:1051px){#canvasPanel .block-grid{grid-template-columns:1fr 1fr}}
+
+.nav button:not(.active):hover{background:#f1efe8}
+.asset:hover{border-color:#cbbf9e}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="brandmark">N</div><div><b>NLUCK STUDIO</b><small>Article designer</small></div></div>
+  <div class="section" id="modeSection" style="padding:16px 18px 4px">
+    <h3 style="margin-top:0">Jenis Halaman</h3>
+    <p class="hint" style="margin-top:-4px">Pilih salah satu — seperti membuka dokumen baru. Keduanya tidak digabung.</p>
+    <div class="mode-cards" id="modeTabs">
+      <button type="button" class="mode-card active" data-mode="template">
+        <span class="mc-icon">🖼️</span>
+        <b>Desain</b>
+        <span>Template siap pakai: hero, tentang, doa, pesan, society.</span>
+      </button>
+      <button type="button" class="mode-card" data-mode="blank">
+        <span class="mc-icon">✏️</span>
+        <b>Kanvas Kosong</b>
+        <span>Halaman benar-benar kosong. Bangun sendiri dari nol.</span>
+      </button>
+    </div>
+    <div class="mode-banner" id="modeHint">Artikel memakai template lengkap (hero, tentang, doa, pesan, society).</div>
+  </div>
+  <div class="nav"><button class="active" data-panel="design">Design</button><button data-panel="content">Konten</button><button data-panel="canvas">Kanvas</button></div>
+  <div id="designPanel">
+    <div class="section"><h3>Template tampilan</h3><div class="choices" id="layouts"></div></div>
+    <div class="section"><h3>Grading warna</h3><div class="grid" id="themes"></div></div>
+    <div class="section"><h3>Warna aksen</h3><div class="palette" id="colors"></div></div>
+    <div class="section"><h3>Background kreatif</h3><div class="choices" id="backgrounds"></div></div>
+    <div class="section"><h3>Asset gambar</h3><div class="hint" style="margin-top:-5px">Logo NLUCK adalah logo tetap seperti referensi dan tidak dapat diganti oleh desain, tema, atau upload.</div><div class="upload"><b>Upload gambar baru</b><span>JPG/PNG/WebP • pilih slot gambar yang ingin diganti</span><select id="assetTarget" style="margin-top:8px"><option value="hero_banner_photo">Hero Banner</option><option value="fabric_texture_photo">Foto Filosofi</option><option value="pesan_photo">Foto Pesan</option><option value="theme_background_art">Background Tema</option><option value="icon_benefit_access">Ikon Benefit 1</option><option value="icon_benefit_discount">Ikon Benefit 2</option><option value="icon_benefit_voucher">Ikon Benefit 3</option><option value="icon_benefit_point">Ikon Benefit 4</option><option value="icon_benefit_gift">Ikon Benefit 5</option><option value="icon_doa_sprout">Ikon Doa 1</option><option value="icon_doa_leaf">Ikon Doa 2</option><option value="icon_doa_sparkle">Ikon Doa 3</option><option value="icon_doa_flower">Ikon Doa 4</option><option value="icon_doa_moon">Ikon Doa 5</option></select><input id="imageUpload" type="file" accept="image/png,image/jpeg,image/webp"> <button class="btn" type="button" id="openMediaPicker" style="margin-top:8px;width:100%">Pilih dari Media Library</button> </div><div class="asset-list" id="assetList"></div></div>
+    <div class="section"><h3>Tipografi</h3>
+      <div class="fieldrow"><label>Font judul</label><select id="titleFont"></select></div>
+      <div class="fieldrow"><label>Font body</label><select id="bodyFont"></select></div>
+      <div class="fieldrow"><label>Ukuran judul</label><div class="control"><input id="titleSize" type="range" min="24" max="64" value="38"><span class="value" id="titleSizeVal">38px</span></div></div>
+      <div class="fieldrow"><label>Ukuran body</label><div class="control"><input id="bodySize" type="range" min="11" max="19" value="14"><span class="value" id="bodySizeVal">14px</span></div></div>
+      <div class="fieldrow"><label>Line height</label><div class="control"><input id="lineHeight" type="range" min="1.25" max="2.2" step=".05" value="1.7"><span class="value" id="lineHeightVal">1.70</span></div></div>
+      <div class="fieldrow"><label>Letter spacing</label><div class="control"><input id="letter" type="range" min="-0.02" max="0.12" step=".005" value="0"><span class="value" id="letterVal">0em</span></div></div>
+      <div class="fieldrow"><label>Rata teks</label><select id="align"><option>left</option><option>center</option><option>right</option></select></div>
+    </div>
+    <div class="section"><h3>Nuansa layout</h3>
+      <div class="toggle"><span>Rounded cards</span><input id="rounded" type="checkbox" checked></div>
+      <div class="toggle"><span>Shadow lembut</span><input id="shadow" type="checkbox" checked></div>
+      <div class="toggle"><span>Floral decoration</span><input id="floral" type="checkbox" checked></div>
+      <div class="toggle"><span>Hero overlay</span><input id="overlay" type="checkbox" checked></div>
+    </div>
+    <div class="section"><h3>Ikon & ornamen</h3>
+      <p class="hint">Lingkaran di daftar benefit dan ikon di bagian doa bisa dihapus, diganti gaya ikon, atau memakai gambar sendiri dari Media Library.</p>
+      <div class="fieldrow"><label>Ikon benefit</label><select id="benefitIconStyle"><option value="none">Tanpa ikon</option><option value="circle">Lingkaran</option><option value="check">Check</option><option value="star">Bintang</option><option value="heart">Hati</option><option value="diamond">Diamond</option><option value="leaf">Daun</option></select></div>
+      <div class="fieldrow"><label>Ikon doa</label><select id="doaIconStyle"><option value="none">Tanpa ikon</option><option value="circle">Lingkaran</option><option value="check">Check</option><option value="star">Bintang</option><option value="heart">Hati</option><option value="diamond">Diamond</option><option value="leaf">Daun</option></select></div>
+      <div class="upload" style="margin-top:10px"><b>Custom icon</b><span>Pilih slot ikon di bawah, lalu upload atau ambil dari Media Library.</span><select id="iconTarget" style="margin-top:8px">
+        <option value="icon_benefit_access">Benefit 1 · Early Access</option><option value="icon_benefit_discount">Benefit 2 · Diskon</option><option value="icon_benefit_voucher">Benefit 3 · Voucher</option><option value="icon_benefit_point">Benefit 4 · Poin</option><option value="icon_benefit_gift">Benefit 5 · Gift</option>
+        <option value="icon_doa_sprout">Doa 1</option><option value="icon_doa_leaf">Doa 2</option><option value="icon_doa_sparkle">Doa 3</option><option value="icon_doa_flower">Doa 4</option><option value="icon_doa_moon">Doa 5</option>
+      </select><input id="iconUpload" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml"><button class="btn" type="button" id="openIconMediaPicker" style="margin-top:8px;width:100%">Pilih Ikon dari Media Library</button><button class="btn" type="button" id="removeSelectedIcon" style="margin-top:7px;width:100%;color:#b34f45">Hapus custom icon slot ini</button></div>
+    </div>
+  </div>
+  <div id="contentPanel" style="display:none">
+    <div class="section"><h3>Isi artikel</h3><p class="hint">Klik teks langsung di preview untuk mengedit. Perubahan otomatis dikirim ke preview.</p><button class="btn" style="width:100%" onclick="focusFirstEditable()">Edit teks di preview</button></div>
+  </div>
+  <div id="canvasPanel" style="display:none">
+    <div class="section">
+      <h3>Kanvas bebas</h3>
+      <p class="hint">Area kosong seukuran artikel. Kamu bisa mulai dari blok siap pakai seperti Hero, Filosofi, Doa, Quote, Foto + Teks, Benefit, dan Penutup. Setelah ditambahkan, setiap elemen tetap bisa digeser, diubah ukuran, diganti gambar, atau dihapus satu per satu.</p>
+      <div class="toggle"><span>Latar transparan</span><input id="canvasTransparent" type="checkbox" checked></div>
+      <div class="fieldrow" id="canvasBgRow"><label>Warna latar kanvas</label><input id="canvasBg" type="color" value="#ffffff"></div>
+      <div class="fieldrow"><label>Lebar kanvas</label><div class="control"><input id="canvasWidth" type="range" min="320" max="4000" step="10"><span class="value" id="canvasWidthVal">1080px</span><input id="canvasWidthNum" type="number" min="320" max="4000" step="10" value="1080" style="width:82px"></div></div>
+      <div class="fieldrow"><label>Tinggi kanvas</label><div class="control"><input id="canvasHeight" type="range" min="200" max="6000" step="10"><span class="value" id="canvasHeightVal">700px</span><input id="canvasHeightNum" type="number" min="200" max="6000" step="10" value="700" style="width:82px"></div></div>
+      <div style="display:flex;gap:7px;margin-top:10px;flex-wrap:wrap">
+        <button type="button" class="btn" id="addCanvasBtn" style="flex:1">＋ Canvas Baru</button>
+        <button type="button" class="btn" id="dupCanvasBtn" style="flex:1">⧉ Duplikat Canvas</button>
+      </div>
+      <div id="canvasList" class="asset-list" style="margin-top:10px"></div>
+      <div style="display:flex;gap:7px;margin-top:8px">
+        <button type="button" class="btn" id="renameCanvasBtn" style="flex:1">✎ Ganti Nama</button>
+        <button type="button" class="btn" id="delCanvasBtn" style="flex:1;color:#c85a50">✕ Hapus Canvas</button>
+      </div>
+      <div class="toggle" id="canvasSocietyRow" style="display:none"><span>Tampilkan form member (NLUCK Society) di bawah kanvas</span><input id="canvasShowSociety" type="checkbox" checked></div>
+    </div>
+    <div class="section">
+      <h3>Blok siap pakai</h3>
+      <p class="hint" style="margin-top:-5px">Cara cepat mulai — menambahkan beberapa elemen sekaligus dalam satu susunan, lalu bisa kamu geser/edit bebas seperti elemen lainnya.</p>
+      <div id="canvasBlockCount" class="hint" style="margin:-2px 0 10px;padding:9px 10px;border:1px solid var(--line);border-radius:9px;background:#faf9f6">Belum ada blok. Setiap tombol di bawah dapat diklik berkali-kali untuk menambahkan blok baru.</div>
+      <div class="block-grid">
+        <button type="button" class="block-choice" id="fcAddHeroBlock"><strong>Hero</strong><span>gambar + judul + teks pembuka</span></button>
+        <button type="button" class="block-choice" id="fcAddPhilosophyBlock"><strong>Filosofi</strong><span>judul + nilai + narasi panjang</span></button>
+        <button type="button" class="block-choice" id="fcAddDoaBlock"><strong>Doa</strong><span>doa + pesan + quote</span></button>
+        <button type="button" class="block-choice" id="fcAddQuoteBlock"><strong>Quote</strong><span>kutipan besar + aksen premium</span></button>
+        <button type="button" class="block-choice" id="fcAddImageTextBlock"><strong>Foto + Teks</strong><span>foto + judul + cerita</span></button>
+        <button type="button" class="block-choice" id="fcAddBenefitsBlock"><strong>Benefit</strong><span>3 keunggulan / manfaat</span></button>
+        <button type="button" class="block-choice" id="fcAddAboutBlock"><strong>Tentang</strong><span>profil / pengenalan NLUCK</span></button>
+        <button type="button" class="block-choice" id="fcAddStoryBlock"><strong>Cerita</strong><span>cerita panjang dengan foto</span></button>
+        <button type="button" class="block-choice" id="fcAddTestimonialBlock"><strong>Testimoni</strong><span>kutipan pelanggan + nama</span></button>
+        <button type="button" class="block-choice" id="fcAddCtaBlock"><strong>CTA</strong><span>ajakan + tombol / pesan akhir</span></button>
+        <button type="button" class="block-choice" id="fcAddClosingBlock"><strong>Penutup</strong><span>pesan akhir + ucapan</span></button>
+        <button type="button" class="block-choice" id="fcAddTitleBlock"><strong>Judul & Paragraf</strong><span>section teks panjang bebas</span></button>
+      </div>
+    </div>
+    <div class="section">
+      <h3>Tambah elemen satuan</h3>
+      <div class="grid">
+        <button type="button" class="choice" id="fcAddImage"><strong>+</strong>Gambar</button>
+        <button type="button" class="choice" id="fcAddBox"><strong>+</strong>Kotak</button>
+        <button type="button" class="choice" id="fcAddCircle"><strong>+</strong>Lingkaran</button>
+        <button type="button" class="choice" id="fcAddText"><strong>+</strong>Teks</button>
+      </div>
+    </div>
+    <div class="section">
+      <h3>Elemen di kanvas</h3>
+      <div id="canvasLayers" class="asset-list"><div class="hint">Belum ada elemen di kanvas.</div></div>
+    </div>
+    <div class="section" id="canvasInspector" style="display:none">
+      <h3>Elemen terpilih</h3>
+      <div id="canvasInspectorBody"></div>
+      <div class="fieldrow"><label>Posisi X</label><div class="control"><input id="fcX" type="range" min="0" max="100" step="1"><span class="value" id="fcXVal">0%</span></div></div>
+      <div class="fieldrow"><label>Posisi Y</label><div class="control"><input id="fcY" type="range" min="0" max="100" step="1"><span class="value" id="fcYVal">0%</span></div></div>
+      <div class="fieldrow"><label>Lebar</label><div class="control"><input id="fcW" type="range" min="4" max="100" step="1"><span class="value" id="fcWVal">0%</span></div></div>
+      <div class="fieldrow"><label>Tinggi</label><div class="control"><input id="fcH" type="range" min="4" max="100" step="1"><span class="value" id="fcHVal">0%</span></div></div>
+      <div class="fieldrow"><label>Opacity</label><div class="control"><input id="fcOpacity" type="range" min="10" max="100" step="5"><span class="value" id="fcOpacityVal">100%</span></div></div>
+      <div style="display:flex;gap:7px;margin-top:10px;flex-wrap:wrap">
+        <button type="button" class="btn" id="fcBack" style="flex:1">⇩ Belakang</button>
+        <button type="button" class="btn" id="fcFront" style="flex:1">⇧ Depan</button>
+        <button type="button" class="btn" id="fcDup" style="flex:1">⧉ Duplikat</button>
+        <button type="button" class="btn" id="fcDel" style="flex:1;color:#c85a50">✕ Hapus</button>
+      </div>
+    </div>
+  </div>
+</aside>
+<main class="preview"><div class="topbar"><div class="title">Live Preview <span style="font-weight:400;color:#888">• perubahan real-time</span></div><div class="actions"><button class="btn" onclick="resetDesign()">Reset</button><button class="btn" onclick="exportConfig()">Export JSON</button><button class="btn primary" onclick="saveDesign()">Simpan Draft</button><button class="btn" onclick="publishDesign()">Terbitkan</button><button class="btn" onclick="previewArticle()">Preview</button><button class="btn" onclick="closeStudio()" title="Tutup Studio">✕ Tutup</button></div></div><div class="canvas"><div class="frame"><iframe id="preview" src="index.html?studio=1"></iframe></div></div></main>
+<aside class="inspector"><h2>NLUCK Design System</h2><p class="hint">Buat kombinasi visual tanpa menyentuh kode.</p><div class="section"><h3>Preset cepat</h3><div class="choices"><button class="choice" onclick="preset('editorial')"><strong>Editorial Luxe</strong>tenang • premium</button><button class="choice" onclick="preset('botanical')"><strong>Botanical</strong>natural • soft</button><button class="choice" onclick="preset('royal')"><strong>Royal Muse</strong>mewah • deep</button><button class="choice" onclick="preset('pearl')"><strong>Pearl Minimal</strong>clean • modern</button></div></div><div class="section"><h3>Rekomendasi asset</h3><div class="upload"><b>Hero Banner</b><span>1600 × 700 px • landscape</span></div><div class="upload" style="margin-top:7px"><b>Foto Filosofi</b><span>800 × 800 px • square</span></div><div class="upload" style="margin-top:7px"><b>Foto Pesan</b><span>1200 × 800 px • landscape</span></div></div><div class="section"><h3>Tips kombinasi</h3><p class="hint">Untuk hasil elegan, gunakan 1 warna gelap + 1 aksen metalik + background tekstur tipis. Font judul serif dan body sans-serif biasanya paling aman.</p></div><div class="savebox"><button class="btn primary" onclick="saveDesign()">Simpan Draft</button><button class="btn" onclick="publishDesign()">Terbitkan</button><button class="btn" onclick="previewArticle()">Preview</button><button class="btn" onclick="exportConfig()">Unduh konfigurasi</button></div></aside>
+</div><div class="toast" id="toast">Tersimpan</div>
+<div class="media-modal" id="mediaModal" aria-hidden="true"><div class="media-dialog"><div class="media-head"><strong>Pilih Asset</strong><input id="mediaSearch" class="media-search" type="search" placeholder="Cari nama gambar…"><button class="btn media-close" type="button" id="closeMediaPicker">Tutup</button></div><div class="media-grid" id="mediaGrid"><div class="media-empty">Memuat media…</div></div></div></div>
+<script>
+const themes={
+'infinia':{name:'Infinia',c:'#78825b',bg:'#f5f3eb',dark:'#2e3e25'},'azure-mist':{name:'Azure Mist',c:'#6386a1',bg:'#eef4f7',dark:'#29445a'},'marble-serenity':{name:'Marble Serenity',c:'#a48762',bg:'#eeece8',dark:'#343235'},'arctic-serenity':{name:'Arctic Serenity',c:'#6e9db8',bg:'#edf5f9',dark:'#244258'},'rosewood-blush':{name:'Rosewood Blush',c:'#9a655f',bg:'#f5ece9',dark:'#533536'},'jade-emerald':{name:'Jade Emerald',c:'#4f806c',bg:'#edf3ee',dark:'#25473b'},'sahara-dune':{name:'Sahara Dune',c:'#b08a58',bg:'#f4eee2',dark:'#493c2e'},'lavender-mist':{name:'Lavender Mist',c:'#8a779d',bg:'#f1edf5',dark:'#41384d'},'plum-velvet':{name:'Plum Velvet',c:'#79536f',bg:'#f0e9ef',dark:'#382738'},'sage-botanical':{name:'Sage Botanical',c:'#718267',bg:'#edf1e9',dark:'#344133'},'blush-ivory':{name:'Blush Ivory',c:'#b88984',bg:'#f7efed',dark:'#503a38'},'onyx-gold':{name:'Onyx Gold',c:'#b48b4d',bg:'#e9e7e2',dark:'#242421'}};
+const layouts={rows:'Rows',cards:'Cards',manuscript:'Manuscript',mosaic:'Mosaic',ledger:'Ledger',magazine:'Magazine',letter:'Letter',frame:'Frame',split:'Split',minimal:'Minimal'};
+const bgs={plain:['Plain','#f6f3ed'],glow:['Glow','radial-gradient(circle at 20% 20%,#e7dfc8,transparent 50%),#f5f2ea'],mesh:['Mesh','linear-gradient(135deg,#f3eee5 25%,transparent 25%),linear-gradient(315deg,#eee7d8 25%,transparent 25%),#f8f5ee'],aurora:['Aurora Wash','radial-gradient(circle at 20% 30%,#dbe9df,transparent 38%),radial-gradient(circle at 80% 20%,#d9e3ee,transparent 40%),#f6f4ef'],marble:['Marble Vein','linear-gradient(120deg,transparent 38%,#ded7ca 39%,transparent 41%),linear-gradient(35deg,#f8f6f1 25%,#ebe6dc 26%,#f8f6f1 60%)'],watercolor:['Watercolor','radial-gradient(circle at 15% 60%,#eadfd7,transparent 35%),radial-gradient(circle at 80% 35%,#e0e9df,transparent 38%),#f7f4ef'],silk:['Silk Sheen','linear-gradient(115deg,#f7f2e8 0%,#e5dccb 46%,#faf8f3 52%,#eee5d5 100%)'],linen:['Linen Grain','repeating-linear-gradient(0deg,#f1ece3 0,#f1ece3 2px,#eee8de 3px,#f1ece3 5px)'],botanical:['Botanical Line','radial-gradient(circle at 85% 15%,#dce6d6,transparent 28%),#f5f2ea'],arabesque:['Arabesque','repeating-radial-gradient(ellipse at 0 0,#efe8dc 0 5px,#f7f4ee 6px 14px)'],sand:['Sand Glow','radial-gradient(circle at 65% 45%,#ead7bb,transparent 38%),#f6efe4'],moon:['Moonlight','radial-gradient(circle at 75% 20%,#d9dce2,transparent 28%),#eef0ee']};
+const fonts=['Cormorant Garamond','Playfair Display','DM Serif Display','Libre Baskerville','Marcellus','Spectral','Poppins','DM Sans','Manrope','Montserrat','Raleway','Amiri'];
+const DEFAULT_CANVAS={id:'canvas_'+Date.now().toString(36),name:'Kanvas 1',transparent:true,background:'#ffffff',widthPx:1080,heightPx:700,elements:[]};
+const DEFAULTS={theme:'infinia',layout:'rows',background:'glow',accent:'#78825b',titleFont:'Cormorant Garamond',bodyFont:'Poppins',titleSize:38,bodySize:14,lineHeight:1.7,letter:0,align:'left',rounded:true,shadow:true,floral:true,overlay:true,benefitIconStyle:'circle',doaIconStyle:'circle',assets:[],content:{},mode:'template',showSociety:true,canvases:[DEFAULT_CANVAS],activeCanvasId:DEFAULT_CANVAS.id,canvas:DEFAULT_CANVAS};
+function fcId(){return 'el_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+function normalizeCanvas(raw){
+  const c=(raw&&typeof raw==='object')?raw:{};
+  const clamp=(v,d,min,max)=>{const n=Number(v);return Number.isFinite(n)?Math.min(max,Math.max(min,n)):d};
+  return {
+    id:(typeof c.id==='string'&&c.id)?c.id:('canvas_'+Date.now().toString(36)+Math.random().toString(36).slice(2,5)),
+    name:(typeof c.name==='string'&&c.name.trim())?c.name.trim():'Kanvas',
+    transparent:typeof c.transparent==='boolean'?c.transparent:true,
+    background:(typeof c.background==='string'&&c.background)?c.background:'#ffffff',
+    widthPx:clamp(c.widthPx,1080,320,2400),
+    heightPx:clamp(c.heightPx,700,200,5000),
+    elements:Array.isArray(c.elements)?c.elements.map(normalizeCanvasElement).filter(Boolean):[]
+  };
+}
+function normalizeCanvases(raw){
+  let list=Array.isArray(raw)?raw:[];
+  if(!list.length && DEFAULTS.canvas) list=[DEFAULTS.canvas];
+  list=list.map(normalizeCanvas);
+  const activeId=(typeof state!=='undefined'&&state.activeCanvasId)||null;
+  return {list,activeId:(activeId&&list.some(c=>c.id===activeId))?activeId:list[0].id};
+}
+function normalizeCanvasElement(e){
+  if(!e||typeof e!=='object')return null;
+  const type=['image','box','circle','text'].includes(e.type)?e.type:null;
+  if(!type)return null;
+  const clamp=(v,d,min,max)=>{const n=Number(v);return Number.isFinite(n)?Math.min(max,Math.max(min,n)):d};
+  const o={id:(typeof e.id==='string'&&e.id)?e.id:fcId(),type,x:clamp(e.x,10,0,100),y:clamp(e.y,10,0,100),w:clamp(e.w,30,2,100),h:clamp(e.h,20,2,100),z:clamp(e.z,1,1,999),opacity:clamp(e.opacity,100,10,100)};
+  if(typeof e.blockId==='string'&&e.blockId)o.blockId=e.blockId;
+  if(typeof e.blockType==='string'&&e.blockType)o.blockType=e.blockType;
+  if(type==='image'){o.src=typeof e.src==='string'?e.src:''}
+  if(type==='box'||type==='circle'){o.bg=(typeof e.bg==='string'&&e.bg)?e.bg:'#78825b';o.radius=clamp(e.radius,type==='circle'?50:8,0,50)}
+  if(type==='text'){o.text=typeof e.text==='string'?e.text:'Teks baru';o.fontFamily=fonts.includes(e.fontFamily)?e.fontFamily:'Poppins';o.fontSize=clamp(e.fontSize,16,8,96);o.color=(typeof e.color==='string'&&e.color)?e.color:'#28351f';o.align=['left','center','right'].includes(e.align)?e.align:'left';o.bold=!!e.bold}
+  return o;
+}
+const urlParams=new URLSearchParams(location.search);
+const articleId=urlParams.get('id')||'';
+const storageKey=articleId?('nluckArticle_'+articleId):'nluckStudio';
+const previewSrc='index.html?studio=1'+(articleId?('&id='+encodeURIComponent(articleId)):'');
+const q=s=>document.querySelector(s);
+const frame=()=>q('#preview')?.contentWindow;
+let config={mediaJsonUrl:'/admin/media/json',mediaUploadUrl:'/admin/media',csrfToken:'',previewUrl:''};
+let state=normalizeState(safeLocalState());
+let autosaveTimer=null;
+
+function safeLocalState(){try{return JSON.parse(localStorage.getItem(storageKey)||'{}')||{}}catch(_){return {}}}
+function num(v,fallback,min,max){const n=Number(v);if(!Number.isFinite(n))return fallback;return Math.min(max,Math.max(min,n))}
+function normalizeState(raw={}){
+  const x={...DEFAULTS,...(raw||{})};
+  x.titleSize=num(x.titleSize,DEFAULTS.titleSize,24,64);
+  x.bodySize=num(x.bodySize,DEFAULTS.bodySize,11,19);
+  x.lineHeight=num(x.lineHeight,DEFAULTS.lineHeight,1.25,2.2);
+  x.letter=num(x.letter,DEFAULTS.letter,-0.02,0.12);
+  x.titleFont=fonts.includes(x.titleFont)?x.titleFont:DEFAULTS.titleFont;
+  x.bodyFont=fonts.includes(x.bodyFont)?x.bodyFont:DEFAULTS.bodyFont;
+  x.align=['left','center','right'].includes(x.align)?x.align:DEFAULTS.align;
+  x.theme=themes[x.theme]?x.theme:DEFAULTS.theme;
+  x.layout=layouts[x.layout]?x.layout:DEFAULTS.layout;
+  x.background=bgs[x.background]?x.background:DEFAULTS.background;
+  x.accent=(typeof x.accent==='string'&&x.accent)?x.accent:DEFAULTS.accent;
+  x.assets=Array.isArray(x.assets)?x.assets.filter(a=>a&&a.target&&a.url):[];
+  x.content=(x.content&&typeof x.content==='object'&&!Array.isArray(x.content))?x.content:{};
+  let rawCanvases=Array.isArray(x.canvases)?x.canvases:(x.canvas?[x.canvas]:[DEFAULT_CANVAS]);
+  x.canvases=rawCanvases.map(normalizeCanvas);
+  if(!x.canvases.length)x.canvases=[normalizeCanvas(DEFAULT_CANVAS)];
+  x.activeCanvasId=(typeof x.activeCanvasId==='string'&&x.canvases.some(c=>c.id===x.activeCanvasId))?x.activeCanvasId:x.canvases[0].id;
+  x.canvas=x.canvases.find(c=>c.id===x.activeCanvasId)||x.canvases[0];
+  x.mode=x.mode==='blank'?'blank':'template';
+  x.showSociety=typeof x.showSociety==='boolean'?x.showSociety:true;
+  ['rounded','shadow','floral','overlay'].forEach(k=>x[k]=typeof x[k]==='boolean'?x[k]:DEFAULTS[k]);
+  x.benefitIconStyle=['none','circle','check','star','heart','diamond','leaf'].includes(x.benefitIconStyle)?x.benefitIconStyle:DEFAULTS.benefitIconStyle;
+  x.doaIconStyle=['none','circle','check','star','heart','diamond','leaf'].includes(x.doaIconStyle)?x.doaIconStyle:DEFAULTS.doaIconStyle;
+  return x;
+}
+function persist(){try{localStorage.setItem(storageKey,JSON.stringify(state))}catch(_){}}
+function send(){const f=frame();if(!f)return;try{f.postMessage({type:'NLUCK_DESIGN',design:state},'*');state.assets.forEach(asset=>f.postMessage({type:'NLUCK_ASSET',asset},'*'))}catch(e){console.error(e)}}
+function stripHtml(html){if(!html)return'';const d=document.createElement('div');d.innerHTML=html;return(d.textContent||d.innerText||'').trim()}
+function notifyParent(action='draft'){
+  if(!articleId)return;
+  const c=state.content||{};const hero=state.assets.find(a=>a.target==='hero_banner_photo');
+  window.parent.postMessage({type:'NLUCK_ARTICLE_SAVE',id:articleId,meta:{title:stripHtml(c.hero_title)||stripHtml(c.collection_name)||'Artikel Tanpa Judul',subtitle:stripHtml(c.collection_badge_text)||stripHtml(c.hero_subtitle)||'',excerpt:stripHtml(c.hero_paragraph)||stripHtml(c.philosophy_paragraph_1)||'',thumbnail:hero?.url||null},design:state,action},'*');
+}
+function init(){
+  if(articleId)q('.brand small').textContent='Mengedit artikel · '+articleId;
+  q('#preview').src=previewSrc;
+  q('#titleFont').innerHTML=fonts.map(f=>`<option value="${f}">${f}</option>`).join('');
+  q('#bodyFont').innerHTML=fonts.map(f=>`<option value="${f}">${f}</option>`).join('');
+  q('#themes').innerHTML=Object.entries(themes).map(([id,t])=>`<button type="button" class="swatch" data-id="${id}" onclick="setDesign('theme','${id}')"><i style="background:linear-gradient(135deg,${t.bg},${t.c})"></i><b>${t.name}</b></button>`).join('');
+  q('#layouts').innerHTML=Object.entries(layouts).map(([id,n])=>`<button type="button" class="choice" data-id="${id}" onclick="setDesign('layout','${id}')"><strong>${n}</strong>${id==='mosaic'?'asymmetric gallery':id==='ledger'?'classic editorial':id==='letter'?'personal letter':id==='split'?'dramatic split':'elegant composition'}</button>`).join('');
+  q('#colors').innerHTML=Object.values(themes).map(t=>`<button type="button" class="color" title="${t.name}" style="background:${t.c}" onclick="setDesign('accent','${t.c}')"></button>`).join('');
+  q('#backgrounds').innerHTML=Object.entries(bgs).map(([id,v])=>`<button type="button" class="choice" data-id="${id}" onclick="setDesign('background','${id}')"><i style="display:block;height:30px;border-radius:6px;background:${v[1]};margin-bottom:6px"></i><strong>${v[0]}</strong></button>`).join('');
+  syncUI();renderAssets();
+  q('#preview').addEventListener('load',()=>{send();setTimeout(send,120);setTimeout(send,500)});
+  document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>showPanel(b.dataset.panel)));
+  ['titleFont','bodyFont','titleSize','bodySize','lineHeight','letter','align','rounded','shadow','floral','overlay','benefitIconStyle','doaIconStyle'].forEach(id=>q('#'+id).addEventListener('input',()=>{const el=q('#'+id);state[id]=el.type==='checkbox'?el.checked:el.value;state=normalizeState(state);syncUI();send();queueAutosave()}));
+  q('#imageUpload').addEventListener('change',e=>handleUpload(e.target.files?.[0]));
+  q('#openMediaPicker').addEventListener('click',()=>openMediaPicker('asset'));
+  q('#openIconMediaPicker').addEventListener('click',()=>{q('#assetTarget').value=q('#iconTarget').value;openMediaPicker('asset')});
+  q('#removeSelectedIcon').addEventListener('click',()=>removeAssetTarget(q('#iconTarget').value));
+  q('#iconUpload').addEventListener('change',e=>{q('#assetTarget').value=q('#iconTarget').value;handleUpload(e.target.files?.[0])});
+  q('#closeMediaPicker').addEventListener('click',closeMediaPicker);
+  q('#mediaSearch').addEventListener('input',()=>{clearTimeout(window.__mediaSearchTimer);window.__mediaSearchTimer=setTimeout(loadMediaPicker,250)});
+  q('#mediaModal').addEventListener('click',e=>{if(e.target===q('#mediaModal'))closeMediaPicker()});
+  q('#canvasTransparent').addEventListener('change',()=>{state.canvas.transparent=q('#canvasTransparent').checked;q('#canvasBgRow').style.opacity=state.canvas.transparent?'.45':'1';persist();send();queueAutosave()});
+  q('#canvasBg').addEventListener('input',()=>{state.canvas.background=q('#canvasBg').value;persist();send();queueAutosave()});
+  q('#canvasHeight').addEventListener('input',()=>setCanvasDimension('height',q('#canvasHeight').value));
+  q('#canvasHeightNum').addEventListener('input',()=>setCanvasDimension('height',q('#canvasHeightNum').value));
+  q('#canvasWidth').addEventListener('input',()=>setCanvasDimension('width',q('#canvasWidth').value));
+  q('#canvasWidthNum').addEventListener('input',()=>setCanvasDimension('width',q('#canvasWidthNum').value));
+  q('#addCanvasBtn').addEventListener('click',addCanvas);
+  q('#dupCanvasBtn').addEventListener('click',duplicateCanvas);
+  q('#delCanvasBtn').addEventListener('click',deleteActiveCanvas);
+  q('#renameCanvasBtn').addEventListener('click',renameActiveCanvas);
+  q('#canvasShowSociety').addEventListener('change',()=>{state.showSociety=q('#canvasShowSociety').checked;persist();send();queueAutosave()});
+  q('#modeTabs').querySelectorAll('.mode-card').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)));
+  q('#fcAddHeroBlock').addEventListener('click',addHeroBlock);
+  q('#fcAddPhilosophyBlock').addEventListener('click',()=>addCanvasBlock('philosophy'));
+  q('#fcAddDoaBlock').addEventListener('click',()=>addCanvasBlock('doa'));
+  q('#fcAddQuoteBlock').addEventListener('click',()=>addCanvasBlock('quote'));
+  q('#fcAddImageTextBlock').addEventListener('click',()=>addCanvasBlock('imageText'));
+  q('#fcAddBenefitsBlock').addEventListener('click',()=>addCanvasBlock('benefits'));
+  q('#fcAddAboutBlock').addEventListener('click',()=>addCanvasBlock('about'));
+  q('#fcAddStoryBlock').addEventListener('click',()=>addCanvasBlock('story'));
+  q('#fcAddTestimonialBlock').addEventListener('click',()=>addCanvasBlock('testimonial'));
+  q('#fcAddCtaBlock').addEventListener('click',()=>addCanvasBlock('cta'));
+  q('#fcAddClosingBlock').addEventListener('click',()=>addCanvasBlock('closing'));
+  q('#fcAddTitleBlock').addEventListener('click',addTitleBlock);
+  q('#fcAddImage').addEventListener('click',()=>addCanvasElement('image'));
+  q('#fcAddBox').addEventListener('click',()=>addCanvasElement('box'));
+  q('#fcAddCircle').addEventListener('click',()=>addCanvasElement('circle'));
+  q('#fcAddText').addEventListener('click',()=>addCanvasElement('text'));
+  const fcSliderMap={fcX:'x',fcY:'y',fcW:'w',fcH:'h',fcOpacity:'opacity'};
+  Object.keys(fcSliderMap).forEach(id=>q('#'+id).addEventListener('input',()=>{
+    if(!selectedCanvasId)return;
+    const v=Number(q('#'+id).value);
+    q('#'+id+'Val').textContent=Math.round(v)+'%';
+    updateCanvasElement(selectedCanvasId,{[fcSliderMap[id]]:v});
+  }));
+  q('#fcFront').addEventListener('click',()=>{if(selectedCanvasId)reorderCanvasElement(selectedCanvasId,1)});
+  q('#fcBack').addEventListener('click',()=>{if(selectedCanvasId)reorderCanvasElement(selectedCanvasId,-1)});
+  q('#fcDup').addEventListener('click',()=>{if(selectedCanvasId)duplicateCanvasElement(selectedCanvasId)});
+  q('#fcDel').addEventListener('click',()=>{if(selectedCanvasId)deleteCanvasElement(selectedCanvasId)});
+  syncCanvasUI();
+  setTimeout(send,250);setTimeout(send,900);
+}
+function showPanel(name){
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active', b.dataset.panel===name));
+  q('#designPanel').style.display=name==='design'?'block':'none';
+  q('#contentPanel').style.display=name==='content'?'block':'none';
+  q('#canvasPanel').style.display=name==='canvas'?'block':'none';
+}
+function setDesign(k,v){state[k]=v;state=normalizeState(state);syncUI();send();queueAutosave()}
+function syncUI(){
+  state=normalizeState(state);
+  ['titleFont','bodyFont','align','benefitIconStyle','doaIconStyle'].forEach(k=>{const el=q('#'+k);if(el)el.value=state[k]});
+  [['titleSize','titleSizeVal','px',0],['bodySize','bodySizeVal','px',0],['lineHeight','lineHeightVal','',2],['letter','letterVal','em',3]].forEach(([a,b,s,d])=>{q('#'+a).value=state[a];q('#'+b).textContent=Number(state[a]).toFixed(d)+s});
+  ['rounded','shadow','floral','overlay'].forEach(k=>q('#'+k).checked=!!state[k]);
+  document.querySelectorAll('.swatch').forEach(x=>x.classList.toggle('active',x.dataset.id===state.theme));
+  document.querySelectorAll('#layouts .choice').forEach(x=>x.classList.toggle('active',x.dataset.id===state.layout));
+  document.querySelectorAll('#backgrounds .choice').forEach(x=>x.classList.toggle('active',x.dataset.id===state.background));
+  document.querySelectorAll('#colors .color').forEach(x=>x.classList.toggle('active',(x.getAttribute('onclick')||'').includes(state.accent)));
+}
+function preset(p){const presets={editorial:{theme:'marble-serenity',layout:'magazine',background:'marble',accent:'#a48762',titleFont:'Playfair Display',bodyFont:'DM Sans',titleSize:42},botanical:{theme:'sage-botanical',layout:'mosaic',background:'botanical',accent:'#718267',titleFont:'Cormorant Garamond',bodyFont:'Manrope',titleSize:40},royal:{theme:'plum-velvet',layout:'frame',background:'moon',accent:'#b48b4d',titleFont:'DM Serif Display',bodyFont:'Poppins',titleSize:44},pearl:{theme:'blush-ivory',layout:'minimal',background:'silk',accent:'#b88984',titleFont:'Marcellus',bodyFont:'DM Sans',titleSize:36}};state=normalizeState({...state,...presets[p]});syncUI();send();queueAutosave()}
+function resetDesign(){state=normalizeState({});selectedCanvasId=null;persist();syncUI();renderAssets();syncCanvasUI();send();queueAutosave();toast('Desain direset')}
+function saveDesign(action='draft'){persist();if(articleId)notifyParent(action);toast(action==='publish'?'Menerbitkan artikel…':(articleId?'Menyimpan draft…':'Desain tersimpan di browser'))}
+function publishDesign(){saveDesign('publish')}
+function previewArticle(){if(articleId)window.parent.postMessage({type:'NLUCK_ARTICLE_PREVIEW'},'*')}
+function queueAutosave(){if(!articleId)return;clearTimeout(autosaveTimer);autosaveTimer=setTimeout(()=>saveDesign('draft'),1200)}
+function closeStudio(){window.parent.postMessage({type:'NLUCK_ARTICLE_CLOSE'},'*')}
+function exportConfig(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='nluck-design.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
+function toast(t){q('#toast').textContent=t;q('#toast').classList.add('show');clearTimeout(window.__toast);window.__toast=setTimeout(()=>q('#toast').classList.remove('show'),1800)}
+function focusFirstEditable(){frame()?.postMessage({type:'NLUCK_FOCUS'},'*')}
+function installAsset(asset){state.assets=state.assets.filter(a=>a.target!==asset.target);state.assets.push(asset);persist();renderAssets();sendAsset(asset);queueAutosave()}
+function assetUrl(value){
+  if(!value)return '';
+  try{
+    const u=new URL(String(value), location.href);
+    if(['localhost','127.0.0.1','0.0.0.0'].includes(u.hostname)) return u.pathname+u.search+u.hash;
+    return u.href;
+  }catch(_){ return String(value); }
+}
+function normalizeDesignAssetUrls(){
+  (state.assets||[]).forEach(a=>{if(a&&a.url)a.url=assetUrl(a.url)});
+  (state.canvas?.elements||[]).forEach(el=>{if(el.type==='image'&&el.src)el.src=assetUrl(el.src)});
+}
+async function handleUpload(file,mode){
+  if(!file)return;
+  if(!/^image\/(png|jpeg|webp|svg\+xml)$/.test(file.type)){toast('Gunakan JPG, PNG, WebP atau SVG');return}
+  if(file.size>5*1024*1024){toast('Ukuran maksimal gambar 5 MB');return}
+  if(!config.mediaUploadUrl||!config.csrfToken){toast('Studio belum siap upload. Tunggu sebentar lalu coba lagi.');return}
+  const fd=new FormData();fd.append('files[]',file);
+  try{
+    toast('Mengupload gambar…');
+    const r=await fetch(config.mediaUploadUrl,{method:'POST',headers:{'X-CSRF-TOKEN':config.csrfToken,'Accept':'application/json'},body:fd});
+    if(!r.ok){let message='Upload gagal';try{const j=await r.json();message=j.message||message}catch(_){}throw new Error(message)}
+    const json=await r.json();const a=json.data?.[0];if(!a)throw new Error('Server tidak mengembalikan asset');
+    a.url=assetUrl(a.url);
+    if(mode==='canvas'){
+      if(selectedCanvasId)updateCanvasElement(selectedCanvasId,{src:a.url});
+      toast('Gambar berhasil diupload dan dipasang ✓');renderInspector();return;
+    }
+    const target=q('#assetTarget').value;
+    installAsset({id:a.id,name:a.name,w:a.width||0,h:a.height||0,url:a.url,target});
+    q('#imageUpload').value='';toast('Gambar berhasil diupload dan dipasang ✓');
+  }catch(err){console.error(err);toast(err.message||'Upload gambar gagal')}
+}
+function sendAsset(asset){frame()?.postMessage({type:'NLUCK_ASSET',asset},'*')}
+function removeAssetTarget(target){state.assets=state.assets.filter(a=>a.target!==target);persist();renderAssets();send();queueAutosave();toast('Custom icon dihapus ✓')}
+function renderAssets(){q('#assetList').innerHTML=state.assets.length?state.assets.map((a,i)=>`<div class="asset"><img class="thumb" src="${a.url}" alt=""><div><b>${a.name||'Asset'}</b><small>${a.w||'?'} × ${a.h||'?'}px · ${a.target}</small></div><button type="button" class="btn" style="margin-left:auto;padding:5px 8px" data-remove-asset="${i}">×</button></div>`).join(''):'<div class="hint">Belum ada gambar khusus. Upload baru atau pilih dari Media Library.</div>';q('#assetList').querySelectorAll('[data-remove-asset]').forEach(btn=>btn.addEventListener('click',()=>{state.assets.splice(Number(btn.dataset.removeAsset),1);persist();renderAssets();send();queueAutosave()}))}
+let mediaPickerMode='asset';
+function activeCanvas(){return state.canvas}
+function syncCanvasStateRef(){
+  const found=(state.canvases||[]).find(c=>c.id===state.activeCanvasId);
+  state.canvas=found||state.canvases[0];
+  if(state.canvas)state.activeCanvasId=state.canvas.id;
+}
+function setCanvasDimension(axis,value){ const min=axis==='width'?320:200, max=axis==='width'?4000:6000; const v=Math.min(max,Math.max(min,Number(value)||min)); if(axis==='width'){state.canvas.widthPx=v;q('#canvasWidth').value=v;q('#canvasWidthNum').value=v;q('#canvasWidthVal').textContent=v+'px'}else{state.canvas.heightPx=v;q('#canvasHeight').value=v;q('#canvasHeightNum').value=v;q('#canvasHeightVal').textContent=v+'px'} persist();send();queueAutosave();renderCanvasList(); }
+function addCanvas(){
+  const n=(state.canvases||[]).length+1;
+  const c=normalizeCanvas({id:'canvas_'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),name:'Kanvas '+n,transparent:true,background:'#ffffff',widthPx:1080,heightPx:700,elements:[]});
+  state.canvases.push(c); state.activeCanvasId=c.id; syncCanvasStateRef(); selectedCanvasId=null; persist(); syncCanvasUI(); renderCanvasList(); renderLayers(); renderInspector(); send(); queueAutosave(); toast('Canvas baru ditambahkan');
+}
+function duplicateCanvas(){
+  const src=activeCanvas(); if(!src)return;
+  const c=normalizeCanvas(JSON.parse(JSON.stringify(src))); c.id='canvas_'+Date.now().toString(36)+Math.random().toString(36).slice(2,5); c.name=src.name+' Copy'; c.elements=(c.elements||[]).map(e=>({...e,id:fcId()}));
+  state.canvases.push(c); state.activeCanvasId=c.id; syncCanvasStateRef(); selectedCanvasId=null; persist(); syncCanvasUI(); renderCanvasList(); renderLayers(); renderInspector(); send(); queueAutosave(); toast('Canvas diduplikasi');
+}
+function deleteActiveCanvas(){
+  if((state.canvases||[]).length<=1){toast('Minimal harus ada 1 canvas');return}
+  const name=activeCanvas()?.name||'Canvas';
+  state.canvases=state.canvases.filter(c=>c.id!==state.activeCanvasId); state.activeCanvasId=state.canvases[0].id; syncCanvasStateRef(); selectedCanvasId=null; persist(); syncCanvasUI(); renderCanvasList(); renderLayers(); renderInspector(); send(); queueAutosave(); toast(name+' dihapus');
+}
+function renameActiveCanvas(){
+  const c=activeCanvas(); if(!c)return; const name=prompt('Nama canvas:',c.name||'Kanvas'); if(name===null)return; const clean=name.trim(); if(!clean)return; c.name=clean; persist(); renderCanvasList(); send(); queueAutosave();
+}
+function selectCanvas(id){
+  if(!(state.canvases||[]).some(c=>c.id===id))return; state.activeCanvasId=id; syncCanvasStateRef(); selectedCanvasId=null; persist(); syncCanvasUI(); renderCanvasList(); renderLayers(); renderInspector(); send(); queueAutosave();
+}
+function renderCanvasList(){
+  const wrap=q('#canvasList'); if(!wrap)return; const list=state.canvases||[];
+  wrap.innerHTML=list.map((c,i)=>`<div class="asset" data-canvas-id="${c.id}" style="cursor:pointer${c.id===state.activeCanvasId?';border-color:var(--dark);border-width:2px':''}"><b style="flex:1">${i+1}. ${c.name}</b><small>${c.widthPx} × ${c.heightPx}px · ${(c.elements||[]).length} elemen</small></div>`).join('');
+  wrap.querySelectorAll('[data-canvas-id]').forEach(el=>el.addEventListener('click',()=>selectCanvas(el.dataset.canvasId)));
+}
+
+/* ---------- KANVAS BEBAS: kelola elemen dari panel admin ---------- */
+let selectedCanvasId=null;
+const canvasLabels={image:'Gambar',box:'Kotak',circle:'Lingkaran',text:'Teks'};
+function findCanvasEl(id){return (state.canvas.elements||[]).find(e=>e.id===id)}
+function addCanvasElement(type){
+  const maxZ=state.canvas.elements.length?Math.max(...state.canvas.elements.map(e=>e.z||1)):0;
+  const base={id:fcId(),type,x:20,y:20,w:type==='text'?40:30,h:type==='text'?12:24,z:maxZ+1,opacity:100};
+  if(type==='image')base.src='';
+  if(type==='box'){base.bg='#78825b';base.radius=8}
+  if(type==='circle'){base.bg='#78825b';base.radius=50}
+  if(type==='text'){base.text='Teks baru';base.fontFamily='Poppins';base.fontSize=18;base.color='#28351f';base.align='left';base.bold=false}
+  state.canvas.elements.push(base);
+  state=normalizeState(state);
+  selectedCanvasId=base.id;
+  persist();renderLayers();renderInspector();send();queueAutosave();
+  if(type==='image')openMediaPicker('canvas');
+}
+function updateCanvasElement(id,patch){
+  const el=findCanvasEl(id);if(!el)return;
+  Object.assign(el,patch);
+  state=normalizeState(state);
+  persist();send();queueAutosave();
+  renderLayers();
+}
+function deleteCanvasElement(id){
+  state.canvas.elements=(state.canvas.elements||[]).filter(e=>e.id!==id);
+  if(selectedCanvasId===id)selectedCanvasId=null;
+  persist();renderLayers();renderInspector();send();queueAutosave();
+}
+function duplicateCanvasElement(id){
+  const el=findCanvasEl(id);if(!el)return;
+  const copy={...el,id:fcId(),x:Math.min(100-el.w,el.x+4),y:Math.min(100-el.h,el.y+4)};
+  state.canvas.elements.push(copy);
+  state=normalizeState(state);
+  selectedCanvasId=copy.id;
+  persist();renderLayers();renderInspector();send();queueAutosave();
+}
+function reorderCanvasElement(id,dir){
+  const el=findCanvasEl(id);if(!el)return;
+  el.z=Math.max(1,(el.z||1)+dir);
+  persist();renderLayers();send();queueAutosave();
+}
+function renderLayers(){
+  const wrap=q('#canvasLayers');if(!wrap)return;
+  const count=q('#canvasBlockCount');
+  const all=(state.canvas.elements||[]);
+  const blockIds=new Set(all.filter(e=>e.blockId).map(e=>e.blockId));
+  const blockCount=blockIds.size;
+  const freeCount=all.filter(e=>!e.blockId).length;
+  if(count)count.innerHTML=blockCount||freeCount?`<b>${blockCount} blok</b>${freeCount?` + ${freeCount} elemen satuan`:''} di kanvas. Setiap tombol blok bisa diklik <b>berkali-kali</b>; blok baru otomatis ditambahkan di bawah blok sebelumnya.`:'Belum ada blok. Setiap tombol di bawah dapat diklik berkali-kali untuk menambahkan blok baru.';
+  const els=(state.canvas.elements||[]).slice().sort((a,b)=>(b.z||1)-(a.z||1));
+  wrap.innerHTML=els.length?els.map(e=>`<div class="asset" data-layer="${e.id}" style="cursor:pointer${e.id===selectedCanvasId?';border-color:var(--dark);border-width:2px':''}"><b style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${canvasLabels[e.type]||e.type}${e.type==='text'&&e.text?': '+e.text.slice(0,18):''}</b><button type="button" class="btn" style="margin-left:auto;padding:5px 8px" data-layer-del="${e.id}">×</button></div>`).join(''):'<div class="hint">Belum ada elemen di kanvas.</div>';
+  wrap.querySelectorAll('[data-layer]').forEach(row=>row.addEventListener('click',e=>{if(e.target.closest('[data-layer-del]'))return;selectedCanvasId=row.dataset.layer;renderLayers();renderInspector();showPanel('canvas')}));
+  wrap.querySelectorAll('[data-layer-del]').forEach(btn=>btn.addEventListener('click',e=>{e.stopPropagation();deleteCanvasElement(btn.dataset.layerDel)}));
+}
+function renderInspector(){
+  const box=q('#canvasInspector');if(!box)return;
+  const el=selectedCanvasId?findCanvasEl(selectedCanvasId):null;
+  if(!el){box.style.display='none';return}
+  box.style.display='block';
+  q('#fcX').value=el.x;q('#fcXVal').textContent=Math.round(el.x)+'%';
+  q('#fcY').value=el.y;q('#fcYVal').textContent=Math.round(el.y)+'%';
+  q('#fcW').value=el.w;q('#fcWVal').textContent=Math.round(el.w)+'%';
+  q('#fcH').value=el.h;q('#fcHVal').textContent=Math.round(el.h)+'%';
+  q('#fcOpacity').value=el.opacity;q('#fcOpacityVal').textContent=Math.round(el.opacity)+'%';
+  let html='';
+  if(el.type==='image'){
+    html=`<div class="upload"><b>Gambar elemen</b><span>${el.src?'Gambar terpasang':'Belum ada gambar'}</span><input id="fcImageUpload" type="file" accept="image/png,image/jpeg,image/webp" style="margin-top:8px"><button type="button" class="btn" id="fcReplaceImage" style="margin-top:8px;width:100%">Pilih dari Media Library</button></div>`;
+  } else if(el.type==='box'||el.type==='circle'){
+    html=`<div class="fieldrow"><label>Warna</label><input id="fcColor" type="color" value="${el.bg}"></div>`+(el.type==='box'?`<div class="fieldrow"><label>Sudut</label><div class="control"><input id="fcRadius" type="range" min="0" max="50" value="${el.radius}"><span class="value" id="fcRadiusVal">${el.radius}px</span></div></div>`:'');
+  } else if(el.type==='text'){
+    html=`<div class="fieldrow" style="grid-template-columns:1fr"><label>Teks</label></div><textarea id="fcText" rows="2" style="width:100%;padding:9px;border:1px solid var(--line);border-radius:8px;font:inherit;resize:vertical">${el.text}</textarea>
+    <div class="fieldrow"><label>Font</label><select id="fcFont">${fonts.map(f=>`<option value="${f}"${f===el.fontFamily?' selected':''}>${f}</option>`).join('')}</select></div>
+    <div class="fieldrow"><label>Ukuran</label><div class="control"><input id="fcFontSize" type="range" min="8" max="96" value="${el.fontSize}"><span class="value" id="fcFontSizeVal">${el.fontSize}px</span></div></div>
+    <div class="fieldrow"><label>Warna teks</label><input id="fcTextColor" type="color" value="${el.color}"></div>
+    <div class="fieldrow"><label>Rata teks</label><div class="tabs"><button type="button" class="${el.align==='left'?'active':''}" data-align="left">Kiri</button><button type="button" class="${el.align==='center'?'active':''}" data-align="center">Tengah</button><button type="button" class="${el.align==='right'?'active':''}" data-align="right">Kanan</button></div></div>
+    <div class="toggle"><span>Tebal</span><input id="fcBold" type="checkbox" ${el.bold?'checked':''}></div>`;
+  }
+  q('#canvasInspectorBody').innerHTML=html;
+  if(el.type==='image'){
+    q('#fcReplaceImage').addEventListener('click',()=>openMediaPicker('canvas'));
+    q('#fcImageUpload').addEventListener('change',e=>handleUpload(e.target.files?.[0],'canvas'));
+  } else if(el.type==='box'||el.type==='circle'){
+    q('#fcColor').addEventListener('input',e=>updateCanvasElement(el.id,{bg:e.target.value}));
+    if(el.type==='box')q('#fcRadius').addEventListener('input',e=>{q('#fcRadiusVal').textContent=e.target.value+'px';updateCanvasElement(el.id,{radius:Number(e.target.value)})});
+  } else if(el.type==='text'){
+    q('#fcText').addEventListener('input',e=>updateCanvasElement(el.id,{text:e.target.value}));
+    q('#fcFont').addEventListener('change',e=>updateCanvasElement(el.id,{fontFamily:e.target.value}));
+    q('#fcFontSize').addEventListener('input',e=>{q('#fcFontSizeVal').textContent=e.target.value+'px';updateCanvasElement(el.id,{fontSize:Number(e.target.value)})});
+    q('#fcTextColor').addEventListener('input',e=>updateCanvasElement(el.id,{color:e.target.value}));
+    q('#fcBold').addEventListener('change',e=>updateCanvasElement(el.id,{bold:e.target.checked}));
+    q('#canvasInspectorBody').querySelectorAll('[data-align]').forEach(b=>b.addEventListener('click',()=>{updateCanvasElement(el.id,{align:b.dataset.align});renderInspector()}));
+  }
+}
+function syncCanvasUI(){
+  syncCanvasStateRef(); renderCanvasList();
+  if(q('#canvasWidth')){const v=state.canvas.widthPx||1080;q('#canvasWidth').value=v;q('#canvasWidthNum').value=v;q('#canvasWidthVal').textContent=v+'px'}
+  if(q('#canvasHeight')){const v=state.canvas.heightPx||700;q('#canvasHeight').value=v;q('#canvasHeightNum').value=v;q('#canvasHeightVal').textContent=v+'px'}
+  q('#modeTabs').querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.mode===state.mode));
+  q('#modeHint').textContent = state.mode==='blank'
+    ? 'Halaman kosong total (seperti dokumen baru) — hanya logo NLUCK di atas. Semua isi diatur bebas lewat tab Kanvas.'
+    : 'Artikel memakai template lengkap (hero, tentang, doa, pesan, society).';
+  q('#canvasTransparent').checked=state.canvas.transparent;
+  q('#canvasBgRow').style.opacity=state.canvas.transparent?'.45':'1';
+  q('#canvasBg').value=state.canvas.background;
+  q('#canvasHeight').value=state.canvas.heightPx;
+  q('#canvasHeightVal').textContent=state.canvas.heightPx+'px';
+  q('#canvasShowSociety').checked=state.showSociety;
+  q('#canvasSocietyRow').style.display=state.mode==='blank'?'flex':'none';
+  applyModeVisibility();
+  renderLayers();renderInspector();
+}
+function applyModeVisibility(){
+  const isBlank = state.mode==='blank';
+  /* Desain & Kanvas Kosong adalah dua pilihan terpisah — bukan digabung.
+     Tab yang tidak relevan untuk mode aktif disembunyikan total supaya
+     tidak membingungkan, mirip memilih "Blank Document" di MS Word. */
+  const designTab=document.querySelector('.nav button[data-panel="design"]');
+  const contentTab=document.querySelector('.nav button[data-panel="content"]');
+  const canvasTab=document.querySelector('.nav button[data-panel="canvas"]');
+  designTab.classList.toggle('nav-hidden',isBlank);
+  contentTab.classList.toggle('nav-hidden',isBlank);
+  canvasTab.classList.toggle('nav-hidden',!isBlank);
+  const activePanel=document.querySelector('.nav button.active')?.dataset.panel;
+  if(isBlank && activePanel!=='canvas'){ showPanel('canvas'); }
+  else if(!isBlank && activePanel==='canvas'){ showPanel('design'); }
+}
+function setMode(mode){
+  state.mode=mode==='blank'?'blank':'template';
+  syncCanvasUI();
+  persist();send();queueAutosave();
+}
+function canvasNextY(blockHeightPx, gapPx=24){
+  /*
+   * Every click on a ready-made block MUST append a new section below the
+   * existing content.  When the canvas needs to grow, keep the old elements
+   * at the same pixel positions instead of compressing/moving them.
+   */
+  let height=Number(state.canvas.heightPx||700);
+  const elements=state.canvas.elements||[];
+  const bottomPx=elements.reduce((max,e)=>Math.max(max,((Number(e.y)||0)+(Number(e.h)||0))*height/100),0);
+  const yPx=bottomPx+gapPx;
+  const required=yPx+blockHeightPx+gapPx;
+  if(required>height){
+    const oldHeight=height;
+    const newHeight=Math.min(3000,Math.max(height,Math.ceil(required/100)*100));
+    if(newHeight>oldHeight){
+      const scale=oldHeight/newHeight;
+      elements.forEach(e=>{
+        e.y=Number(e.y||0)*scale;
+        e.h=Number(e.h||0)*scale;
+      });
+      state.canvas.heightPx=newHeight;
+      height=newHeight;
+    }
+  }
+  return Math.min(96,(yPx/height)*100);
+}
+function canvasBlockBase(type,x,y,w,h,z,extra={}){
+  return {id:fcId(),type,x,y,w,h,z,opacity:100,...extra};
+}
+function addCanvasBlock(kind){
+  const maxZ=state.canvas.elements.length?Math.max(...state.canvas.elements.map(e=>e.z||1)):0;
+  const presets={
+    philosophy:{height:250,title:'Filosofi NLUCK',body:['Kesederhanaan yang terasa indah.','Kami percaya setiap detail memiliki cerita dan setiap koleksi dibuat dengan niat yang baik.','Gunakan ruang ini untuk menjelaskan nilai, prinsip, atau makna di balik koleksi NLUCK.']},
+    doa:{height:250,title:'Doa untuk Setiap Langkah',body:['Semoga setiap langkah membawa kebaikan, ketenangan, dan keberkahan.','Semoga apa yang kamu kenakan menjadi pengingat untuk menjaga hati dan terus bertumbuh.'],quote:'Bismillah untuk setiap langkah.'},
+    quote:{height:170,title:'Satu kalimat yang ingin diingat',body:'Tuliskan kutipan, pesan singkat, atau kalimat khas NLUCK di sini.'},
+    imageText:{height:260,title:'Cerita di Balik Koleksi',body:'Jelaskan inspirasi, material, motif, atau cerita yang ingin kamu sampaikan kepada pelanggan.'},
+    benefits:{height:230,title:'Mengapa Memilih NLUCK?',body:['Material nyaman untuk menemani keseharian.','Desain thoughtful yang mudah dipadukan.','Dibuat dengan perhatian pada detail.']},
+    about:{height:240,title:'Tentang NLUCK',body:'Kenalkan NLUCK, karakter brand, perjalanan singkat, dan alasan mengapa koleksi ini dibuat. Tulis sebanyak yang kamu butuhkan; ukuran blok dapat diperbesar setelah ditambahkan.'},
+    story:{height:300,title:'Cerita di Balik Koleksi',body:'Gunakan blok ini untuk cerita yang lebih panjang: inspirasi, proses kreatif, material, makna motif, atau perjalanan sebuah koleksi.'},
+    testimonial:{height:210,title:'Apa Kata Mereka',body:'“Koleksinya terasa personal, elegan, dan nyaman dipakai setiap hari.”',quote:'— Pelanggan NLUCK'},
+    cta:{height:190,title:'Temukan Koleksi NLUCK',body:'Ajak pembaca melanjutkan ke katalog, menghubungi NLUCK, atau melakukan tindakan lain yang kamu inginkan.'},
+    closing:{height:190,title:'Terima kasih sudah menjadi bagian dari NLUCK',body:'Tambahkan pesan penutup, ajakan melihat koleksi, atau kalimat hangat untuk pembaca.'}
+  };
+  const p=presets[kind]; if(!p)return;
+  const topPct=canvasNextY(p.height);
+  const canvasH=Number(state.canvas.heightPx||700);
+  const add=(type,x,localY,w,localH,z,extra={})=>{
+    const globalY=topPct + (localY/100*p.height/canvasH*100);
+    const globalH=(localH/100*p.height/canvasH*100);
+    return canvasBlockBase(type,x,globalY,w,globalH,z,extra);
+  };
+  const els=[];
+  if(kind==='philosophy'){
+    els.push(add('text',8,4,84,11,maxZ+1,{text:p.title,fontFamily:'Cormorant Garamond',fontSize:32,color:'#28351f',align:'center',bold:true}));
+    els.push(add('box',35,18,30,1,maxZ+2,{bg:'#a48762',radius:2}));
+    p.body.forEach((t,i)=>els.push(add('text',10,24+i*23,80,17,maxZ+3+i,{text:t,fontFamily:'Poppins',fontSize:13,color:'#3a3f34',align:i===0?'center':'left',bold:false})));
+  } else if(kind==='doa'){
+    els.push(add('text',8,2,84,9,maxZ+1,{text:'♡  DOA NLUCK  ♡',fontFamily:'Poppins',fontSize:11,color:'#a48762',align:'center',bold:true}));
+    els.push(add('text',8,13,84,14,maxZ+2,{text:p.title,fontFamily:'Cormorant Garamond',fontSize:31,color:'#28351f',align:'center',bold:true}));
+    p.body.forEach((t,i)=>els.push(add('text',12,32+i*18,76,14,maxZ+3+i,{text:t,fontFamily:'Poppins',fontSize:13,color:'#3a3f34',align:'center',bold:false})));
+    els.push(add('box',12,70,76,22,maxZ+5,{bg:'#f3eee6',radius:10,opacity:100}));
+    els.push(add('text',17,75,66,12,maxZ+6,{text:p.quote,fontFamily:'Cormorant Garamond',fontSize:18,color:'#5b4a3a',align:'center',bold:false}));
+  } else if(kind==='quote'){
+    els.push(add('box',5,3,90,94,maxZ+1,{bg:'#28351f',radius:14,opacity:100}));
+    els.push(add('text',13,10,74,18,maxZ+2,{text:'“',fontFamily:'Cormorant Garamond',fontSize:46,color:'#d7b98a',align:'center',bold:false}));
+    els.push(add('text',13,30,74,32,maxZ+3,{text:p.body,fontFamily:'Cormorant Garamond',fontSize:23,color:'#f3e7dd',align:'center',bold:false}));
+    els.push(add('text',25,76,50,10,maxZ+4,{text:'NLUCK · GRACE BEYOND BEAUTY',fontFamily:'Poppins',fontSize:9,color:'#d7b98a',align:'center',bold:true}));
+  } else if(kind==='imageText'){
+    els.push(add('image',7,4,42,92,maxZ+1,{src:''}));
+    els.push(add('text',54,9,39,14,maxZ+2,{text:p.title,fontFamily:'Cormorant Garamond',fontSize:29,color:'#28351f',align:'left',bold:true}));
+    els.push(add('text',54,28,39,43,maxZ+3,{text:p.body,fontFamily:'Poppins',fontSize:13,color:'#3a3f34',align:'left',bold:false}));
+    els.push(add('text',54,78,39,9,maxZ+4,{text:'READ · REFLECT · REMEMBER',fontFamily:'Poppins',fontSize:9,color:'#a48762',align:'left',bold:true}));
+  } else if(kind==='benefits'){
+    els.push(add('text',8,4,84,12,maxZ+1,{text:p.title,fontFamily:'Cormorant Garamond',fontSize:30,color:'#28351f',align:'center',bold:true}));
+    p.body.forEach((t,i)=>{
+      const yy=23+i*23;
+      els.push(add('circle',10,yy,8,9,maxZ+2+i,{bg:'#a48762',radius:50,opacity:100}));
+      els.push(add('text',22,yy-1,68,14,maxZ+5+i,{text:t,fontFamily:'Poppins',fontSize:13,color:'#3a3f34',align:'left',bold:false}));
+    });
+  } else if(kind==='about'){
+    els.push(add('text',8,5,84,14,maxZ+1,{text:p.title,fontFamily:'Cormorant Garamond',fontSize:31,color:'#28351f',align:'left',bold:true}));
+    els.push(add('box',8,23,20,1,maxZ+2,{bg:'#a48762',radius:2}));
+    els.push(add('text',8,30,84,52,maxZ+3,{text:p.body,fontFamily:'Poppins',fontSize:14,color:'#3a3f34',align:'left',bold:false}));
+    els.push(add('text',8,84,84,8,maxZ+4,{text:'NLUCK · STORY · VALUES · PURPOSE',fontFamily:'Poppins',fontSize:9,color:'#a48762',align:'left',bold:true}));
+  } else if(kind==='story'){
+    els.push(add('image',7,4,38,92,maxZ+1,{src:''}));
+    els.push(add('text',50,7,43,14,maxZ+2,{text:p.title,fontFamily:'Cormorant Garamond',fontSize:29,color:'#28351f',align:'left',bold:true}));
+    els.push(add('text',50,28,43,52,maxZ+3,{text:p.body,fontFamily:'Poppins',fontSize:13,color:'#3a3f34',align:'left',bold:false}));
+    els.push(add('text',50,83,43,8,maxZ+4,{text:'A STORY WORTH REMEMBERING',fontFamily:'Poppins',fontSize:9,color:'#a48762',align:'left',bold:true}));
+  } else if(kind==='testimonial'){
+    els.push(add('box',8,8,84,82,maxZ+1,{bg:'#f3eee6',radius:14,opacity:100}));
+    els.push(add('text',14,15,72,16,maxZ+2,{text:'“',fontFamily:'Cormorant Garamond',fontSize:42,color:'#a48762',align:'center',bold:false}));
+    els.push(add('text',15,33,70,30,maxZ+3,{text:p.body,fontFamily:'Cormorant Garamond',fontSize:21,color:'#3a3f34',align:'center',bold:false}));
+    els.push(add('text',20,69,60,10,maxZ+4,{text:p.quote,fontFamily:'Poppins',fontSize:10,color:'#77766f',align:'center',bold:true}));
+  } else if(kind==='cta'){
+    els.push(add('text',8,8,84,16,maxZ+1,{text:p.title,fontFamily:'Cormorant Garamond',fontSize:30,color:'#28351f',align:'center',bold:true}));
+    els.push(add('text',14,30,72,34,maxZ+2,{text:p.body,fontFamily:'Poppins',fontSize:13,color:'#3a3f34',align:'center',bold:false}));
+    els.push(add('box',31,70,38,17,maxZ+3,{bg:'#28351f',radius:9,opacity:100}));
+    els.push(add('text',35,74,30,9,maxZ+4,{text:'LIHAT KOLEKSI  →',fontFamily:'Poppins',fontSize:10,color:'#ffffff',align:'center',bold:true}));
+  } else if(kind==='closing'){
+    els.push(add('text',8,8,84,16,maxZ+1,{text:p.title,fontFamily:'Cormorant Garamond',fontSize:29,color:'#28351f',align:'center',bold:true}));
+    els.push(add('text',12,29,76,35,maxZ+2,{text:p.body,fontFamily:'Poppins',fontSize:13,color:'#3a3f34',align:'center',bold:false}));
+    els.push(add('text',25,73,50,11,maxZ+3,{text:'Terima kasih ♡',fontFamily:'Cormorant Garamond',fontSize:19,color:'#a48762',align:'center',bold:false}));
+  }
+  const blockId=fcId();
+  els.forEach(el=>{el.blockId=blockId;el.blockType=kind});
+  state.canvas.elements.push(...els);
+  state=normalizeState(state);
+  selectedCanvasId=els.find(e=>e.type==='image')?.id || els[0]?.id || null;
+  persist();renderLayers();renderInspector();send();queueAutosave();
+  if(kind==='imageText')openMediaPicker('canvas');
+  toast((p.title||'Blok')+' ditambahkan ✓');
+}
+function addHeroBlock(){
+  const maxZ=state.canvas.elements.length?Math.max(...state.canvas.elements.map(e=>e.z||1)):0;
+  const blockHeight=360;
+  const y=canvasNextY(blockHeight);
+  const canvasH=Number(state.canvas.heightPx||700);
+  const add=(type,x,localY,w,localH,z,extra={})=>canvasBlockBase(type,x,y+(localY/100*blockHeight/canvasH*100),w,(localH/100*blockHeight/canvasH*100),z,extra);
+  const img=add('image',0,0,100,54,maxZ+1,{src:''});
+  const title=add('text',8,60,84,12,maxZ+2,{text:'Judul Hero Kamu',fontFamily:'Cormorant Garamond',fontSize:34,color:'#28351f',align:'center',bold:true});
+  const sub=add('text',12,75,76,16,maxZ+3,{text:'Tulis kalimat pembuka atau ajakan di sini.',fontFamily:'Poppins',fontSize:14,color:'#555b50',align:'center',bold:false});
+  const blockId=fcId();[img,title,sub].forEach(el=>{el.blockId=blockId;el.blockType='hero'});
+  state.canvas.elements.push(img,title,sub);
+  state=normalizeState(state);selectedCanvasId=img.id;
+  persist();renderLayers();renderInspector();send();queueAutosave();openMediaPicker('canvas');toast('Blok Hero ditambahkan ✓');
+}
+function addTitleBlock(){
+  const maxZ=state.canvas.elements.length?Math.max(...state.canvas.elements.map(e=>e.z||1)):0;
+  const blockHeight=180;
+  const y=canvasNextY(blockHeight);
+  const canvasH=Number(state.canvas.heightPx||700);
+  const add=(type,x,localY,w,localH,z,extra={})=>canvasBlockBase(type,x,y+(localY/100*blockHeight/canvasH*100),w,(localH/100*blockHeight/canvasH*100),z,extra);
+  const title=add('text',8,8,84,16,maxZ+1,{text:'Judul Baru',fontFamily:'Cormorant Garamond',fontSize:30,color:'#28351f',align:'left',bold:true});
+  const body=add('text',8,30,84,48,maxZ+2,{text:'Tulis paragraf penjelasan di sini. Klik lalu geser/tarik sudutnya untuk mengatur ukuran.',fontFamily:'Poppins',fontSize:14,color:'#3a3f34',align:'left',bold:false});
+  const blockId=fcId();[title,body].forEach(el=>{el.blockId=blockId;el.blockType='title'});
+  state.canvas.elements.push(title,body);
+  state=normalizeState(state);selectedCanvasId=title.id;
+  persist();renderLayers();renderInspector();send();queueAutosave();toast('Blok Judul ditambahkan ✓');
+}
+function openMediaPicker(mode){mediaPickerMode=mode||'asset';q('#mediaModal').classList.add('show');q('#mediaModal').setAttribute('aria-hidden','false');loadMediaPicker();q('#mediaSearch').focus()}
+function closeMediaPicker(){q('#mediaModal').classList.remove('show');q('#mediaModal').setAttribute('aria-hidden','true')}
+async function loadMediaPicker(){const grid=q('#mediaGrid');grid.innerHTML='<div class="media-empty">Memuat media…</div>';try{const query=q('#mediaSearch').value.trim();const sep=config.mediaJsonUrl.includes('?')?'&':'?';const url=config.mediaJsonUrl+(query?sep+'q='+encodeURIComponent(query):'');const r=await fetch(url,{headers:{Accept:'application/json'}});if(!r.ok)throw new Error('Media Library gagal dimuat');const json=await r.json();if(!json.data?.length){grid.innerHTML='<div class="media-empty">Belum ada asset. Gunakan Upload gambar baru untuk menambah gambar.</div>';return}grid.innerHTML=json.data.map((a,i)=>`<button class="media-card" type="button" data-media-index="${i}"><img src="${assetUrl(a.url)}" alt=""><b title="${a.name}">${a.name}</b><small>${a.mime_type||'image'}</small></button>`).join('');grid.querySelectorAll('[data-media-index]').forEach(el=>el.addEventListener('click',()=>selectMedia(json.data[Number(el.dataset.mediaIndex)])))}catch(err){console.error(err);grid.innerHTML='<div class="media-empty">'+(err.message||'Media Library tidak dapat dimuat.')+'</div>'}}
+function selectMedia(asset){
+  if(mediaPickerMode==='canvas'){
+    if(selectedCanvasId)updateCanvasElement(selectedCanvasId,{src:assetUrl(asset.url)});
+    closeMediaPicker();toast('Gambar kanvas dipasang ✓');renderInspector();return;
+  }
+  const target=q('#assetTarget').value;installAsset({id:asset.id,name:asset.name,w:asset.width||0,h:asset.height||0,url:assetUrl(asset.url),target});closeMediaPicker();toast('Asset dari Media Library dipasang ✓')
+}
+window.addEventListener('message',e=>{
+  if(!e.data)return;
+  if(e.data.type==='NLUCK_CONFIG'){config={...config,...e.data.config};return}
+  if(e.data.type==='NLUCK_CONTENT_CHANGED'){state.content=e.data.content||{};persist();queueAutosave();return}
+  if(e.data.type==='NLUCK_LOAD_DESIGN'){state=normalizeState(e.data.design||{});persist();syncUI();renderAssets();syncCanvasUI();send();return}
+  if(e.data.type==='NLUCK_SERVER_SAVED'){toast(e.data.action==='publish'?'Artikel terbit ✓':'Tersimpan ke server ✓');return}
+  if(e.data.type==='NLUCK_SERVER_SAVE_FAILED'){toast('Gagal menyimpan ke server');return}
+  if(e.data.type==='NLUCK_CANVAS_ELEMENT_MOVED'){
+    const el=findCanvasEl(e.data.id);
+    if(el){el.x=e.data.x;el.y=e.data.y;el.w=e.data.w;el.h=e.data.h;persist();queueAutosave();if(selectedCanvasId===e.data.id)renderInspector();renderLayers()}
+    return;
+  }
+  if(e.data.type==='NLUCK_CANVAS_SELECT'){
+    selectedCanvasId=e.data.id||null;
+    renderLayers();renderInspector();
+    if(selectedCanvasId)showPanel('canvas');
+    return;
+  }
+});
+init();
+</script>
+</body></html>

@@ -1,0 +1,9 @@
+STEP 11 — Admin article list patch
+
+Open resources/views/admin/articles/index.blade.php.
+Inside each article row/card, add:
+
+@include('admin.articles.index-workflow', ['article' => $article])
+
+If your index view already has an action area, copy only the buttons/forms from
+index-workflow.blade.php into that area instead of including the whole file.

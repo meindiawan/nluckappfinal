@@ -1,0 +1,13 @@
+STEP 13 — WAJIB: resources/views/layouts/admin.blade.php
+
+Di dalam <head>, tambahkan:
+
+@stack('styles')
+
+Contoh:
+<head>
+    ...
+    @stack('styles')
+</head>
+
+Ini diperlukan agar dashboard.css dan CSS halaman admin lain yang memakai @push('styles') benar-benar dimuat.

@@ -1,0 +1,2 @@
+Tambahkan pada sidebar admin:
+<a href="{{ route('admin.leads.index') }}">Customer Leads</a>
