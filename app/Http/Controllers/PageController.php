@@ -66,7 +66,7 @@ class PageController extends Controller
             $content = $pages[$page];
         }
         $products = Product::where('status', 'active')->orderByDesc('featured')->orderBy('sort_order')->limit(4)->get();
-        $articles = Article::where('status', 'published')->orderByDesc('featured')->orderBy('sort_order')->latest('published_at')->limit(3)->get();
+        $articles = Article::published()->orderByDesc('featured')->orderBy('sort_order')->latest('published_at')->limit(3)->get();
 
         return view('pages.show', compact('content', 'page', 'products', 'articles'));
     }

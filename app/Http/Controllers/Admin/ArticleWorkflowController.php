@@ -13,7 +13,7 @@ class ArticleWorkflowController extends Controller
     {
         $article->update([
             'status' => 'published',
-            'published_at' => $article->published_at ?: now(),
+            'published_at' => ($article->published_at && $article->published_at->lte(now())) ? $article->published_at : now(),
         ]);
 
         return back()->with('success', 'Artikel berhasil diterbitkan.');

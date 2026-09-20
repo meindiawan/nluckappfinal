@@ -11,7 +11,7 @@ class ProductCatalogController extends Controller
     public function index(Request $request)
     {
         $featuredProducts = Product::where('status', 'active')->orderByDesc('featured')->orderBy('sort_order')->limit(4)->get();
-        $latestArticles = \App\Models\Article::where('status', 'published')->where(fn($q) => $q->whereNull('published_at')->orWhere('published_at', '<=', now()))->orderByDesc('featured')->orderBy('sort_order')->latest('published_at')->limit(3)->get();
+        $latestArticles = \App\Models\Article::published()->orderByDesc('featured')->orderBy('sort_order')->latest('published_at')->limit(3)->get();
         $promoBanners = PromoBanner::forCarousel();
 
         return view('welcome', compact('featuredProducts', 'latestArticles', 'promoBanners'));

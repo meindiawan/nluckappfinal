@@ -22,6 +22,12 @@ class Article extends Model {
   return '/storage/' . $thumbnail;
  }
 
+ /**
+  * Artikel yang tampil di website publik: status terbit DAN jadwal terbit sudah lewat (atau kosong).
+  * Dipakai di semua halaman publik supaya daftar & halaman detail selalu konsisten.
+  */
+ public function scopePublished($query){return $query->where('status','published')->where(fn($q)=>$q->whereNull('published_at')->orWhere('published_at','<=',now()));}
+
  public function getRouteKeyName(){return 'slug';}
  public function design():array{return $this->content_json?(json_decode($this->content_json,true)?:[]):[];}
  public function leads():HasMany{return $this->hasMany(ArticleLead::class);}
