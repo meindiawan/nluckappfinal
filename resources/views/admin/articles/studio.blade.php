@@ -74,7 +74,7 @@
     </header>
 
     <main class="nluck-studio-frame-wrap">
-        <iframe id="studio" src="{{ asset('studio/admin.html', false) }}?id={{ $article->id }}" title="NLUCK Studio" class="nluck-studio-frame"></iframe>
+        <iframe id="studio" src="/studio/admin.html?id={{ $article->id }}" title="NLUCK Studio" class="nluck-studio-frame"></iframe>
     </main>
 </div>
 
