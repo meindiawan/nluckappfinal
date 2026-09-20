@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="{{ asset('admin-assets/article-form.css') }}">
 @csrf
 <div class="form-grid">
   <div><label>Judul</label><input name="title" value="{{ old('title',$article->title??'') }}" required></div>

@@ -1,0 +1,17 @@
+/* Gaya form Artikel (Buat/Edit). Dibatasi di .panel-form supaya tidak mengubah form lain. */
+.panel-form{background:#fff;border:1px solid #e5dfd6;border-radius:16px;padding:24px;box-shadow:0 8px 28px rgba(40,30,20,.05)}
+.panel-form .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;background:none;border:0;padding:0;box-shadow:none;border-radius:0}
+.panel-form .form-grid>div{display:flex;flex-direction:column;gap:7px;min-width:0}
+.panel-form .form-grid .full{grid-column:1/-1}
+.panel-form .form-grid label{font-size:12px;font-weight:700;color:#5d554c}
+.panel-form .form-grid input:not([type=checkbox]):not([type=file]),
+.panel-form .form-grid select,
+.panel-form .form-grid textarea{width:100%;border:1px solid #ded8cf;border-radius:10px;padding:12px 13px;background:#fff;font:inherit;color:#211e19;outline:none}
+.panel-form .form-grid textarea{resize:vertical;min-height:110px}
+.panel-form .form-grid input:focus,.panel-form .form-grid select:focus,.panel-form .form-grid textarea:focus{border-color:#9b7f5f;box-shadow:0 0 0 3px rgba(155,127,95,.12)}
+.panel-form .form-grid input[type=file]{font:inherit;font-size:13px}
+.panel-form .form-grid .check{padding-top:4px}
+.panel-form .form-grid .check label{display:flex;flex-direction:row;align-items:center;gap:8px;font-size:14px;font-weight:600}
+.panel-form .form-grid .check input{width:auto}
+.panel-form .form-actions{display:flex;gap:10px;margin-top:24px}
+@media(max-width:760px){.panel-form{padding:18px}.panel-form .form-grid{grid-template-columns:1fr}.panel-form .form-grid .full{grid-column:auto}}
