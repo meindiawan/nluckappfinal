@@ -1,7 +1,7 @@
 # NLUCK — Deployment Checklist (Production)
 
 ## 1. Hosting
-Use a Laravel-capable hosting package with PHP 8.2+ and MySQL/MariaDB. Set the domain document root to `public/`.
+Use a Laravel-capable hosting package with PHP 8.2+ and MySQL/MariaDB. Set the domain document root to `public/`. On shared hosting where the document root is fixed to the project root (e.g. Hostinger `public_html`), the root `.htaccess` in this repo routes every request into `public/` and keeps `.env`, `vendor/`, `app/` etc. unreachable from the web.
 
 ## 2. Environment
 Copy `.env.example` to `.env` and set:
@@ -48,5 +48,15 @@ Open `/admin/login`, use the credentials from `.env`, then immediately verify:
 - Do not run `php artisan migrate:fresh`.
 - Do not set `APP_DEBUG=true`.
 - Do not use `ADMIN_PASSWORD=admin` or another weak password.
-- Do not expose the Laravel project root as the web document root; use `public/`.
+- Do not replace the root `.htaccess` with the default Laravel one when the document root is the project root; it would expose `.env` and other files.
 - Do not run `DemoContentSeeder` unless you intentionally want demo data.
+
+## 6. Update after `git push` (Hostinger, SSH)
+```bash
+php artisan config:clear
+php artisan migrate --force
+php artisan db:seed --class=AdminUserSeeder --force   # create/reset admin from ADMIN_USERNAME + ADMIN_PASSWORD in .env
+php artisan storage:link
+php artisan optimize:clear
+```
+After deploy, `https://your-domain.com/.env` must return 404.

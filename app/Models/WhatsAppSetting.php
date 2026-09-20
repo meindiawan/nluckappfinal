@@ -19,10 +19,14 @@ class WhatsAppSetting extends Model
 
         if (! $setting) {
             return static::query()->create([
-                'group_name' => 'NLUCK Society',
-                'group_link' => (string) env('WHATSAPP_GROUP_LINK', ''),
+                'group_name' => (string) config('nluck.social.group_name', 'NLUCK Society'),
+                'group_link' => (string) config('nluck.social.group_link', ''),
                 'success_title' => 'Terima kasih!',
                 'success_message' => 'Data Anda sudah kami terima. Silakan lanjut ke WhatsApp Group.',
+                'contact_whatsapp' => config('nluck.social.contact_whatsapp'),
+                'contact_email' => config('nluck.social.contact_email'),
+                'instagram_url' => config('nluck.social.instagram_url'),
+                'tiktok_url' => config('nluck.social.tiktok_url'),
             ]);
         }
 
@@ -60,6 +64,6 @@ class WhatsAppSetting extends Model
      */
     public function getHasSocialLinksAttribute(): bool
     {
-        return filled($this->instagram_url) || filled($this->tiktok_url) || filled($this->facebook_url);
+        return filled($this->instagram_url) || filled($this->tiktok_url) || filled($this->facebook_url) || filled($this->group_link);
     }
 }

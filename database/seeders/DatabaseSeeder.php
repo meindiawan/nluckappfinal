@@ -20,14 +20,14 @@ class DatabaseSeeder extends Seeder
         SiteContent::current('doa');
 
         WhatsAppSetting::updateOrCreate(['id' => 1], [
-            'group_name' => env('WHATSAPP_GROUP_NAME', 'NLUCK Society'),
-            'group_link' => env('WHATSAPP_GROUP_LINK', 'https://chat.whatsapp.com/GdjBGEwcX1L6VK7i3SPaLr'),
+            'group_name' => config('nluck.social.group_name'),
+            'group_link' => config('nluck.social.group_link'),
             'success_title' => 'Terima kasih!',
             'success_message' => 'Data Anda sudah kami terima. Silakan lanjut ke WhatsApp Group.',
-            'contact_whatsapp' => env('WHATSAPP_CONTACT'),
-            'contact_email' => env('WHATSAPP_CONTACT_EMAIL'),
-            'instagram_url' => env('WHATSAPP_INSTAGRAM_URL', 'https://www.instagram.com/nluck.scarves'),
-            'tiktok_url' => env('WHATSAPP_TIKTOK_URL', 'https://www.tiktok.com/@nluck.scarves'),
+            'contact_whatsapp' => config('nluck.social.contact_whatsapp'),
+            'contact_email' => config('nluck.social.contact_email'),
+            'instagram_url' => config('nluck.social.instagram_url'),
+            'tiktok_url' => config('nluck.social.tiktok_url'),
         ]);
     }
 }
