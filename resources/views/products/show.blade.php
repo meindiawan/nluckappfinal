@@ -4,7 +4,7 @@
 @php
     $wa = $whatsappSetting ?? \App\Models\WhatsAppSetting::current();
     $galleryUrls = $product->gallery_urls;
-    $baseMessage = 'Halo NLUCK, saya ingin memesan '.$product->name.' (Rp '.number_format($product->price,0,',','.').'). Boleh dibantu info stok, warna, dan ongkirnya ya, kak?';
+    $baseMessage = 'Halo NLUCKSCARVES, saya ingin memesan '.$product->name.' (Rp '.number_format($product->price,0,',','.').'). Boleh dibantu info stok, warna, dan ongkirnya ya, kak?';
     $buyNumber = $wa->contact_whatsapp ?: '082246798794';
     $buyDigits = preg_replace('/\D+/', '', $buyNumber);
     if (str_starts_with($buyDigits, '0')) { $buyDigits = '62' . substr($buyDigits, 1); }
@@ -27,9 +27,13 @@
         </div>
         @endif
 
-        <div class="detailImg">
+        <div class="detailImg" id="detailImgBox">
             @if($galleryUrls)
-                <img id="mainProductImage" src="{{ $galleryUrls[0] }}" alt="{{ $product->name }}">
+                <div class="zoomWrap" id="zoomWrap">
+                    <img id="mainProductImage" src="{{ $galleryUrls[0] }}" alt="{{ $product->name }}">
+                    <div class="zoomLens" id="zoomLens"></div>
+                </div>
+                <div class="zoomResult" id="zoomResult"><img id="zoomResultImg" src="{{ $galleryUrls[0] }}" alt=""></div>
             @endif
         </div>
 
@@ -74,7 +78,7 @@
             @endif
 
             <div class="buy-actions">
-                <a class="btn wa" id="waCtaGroup" target="_blank" rel="noopener" href="{{ $buyLink }}">Buy Now — Pesan via WhatsApp →</a>
+                <a class="btn wa" id="waCtaGroup" target="_blank" rel="noopener" href="{{ $buyLink }}">Buy Now →</a>
                 @if($wa->contact_whatsapp)
                     <a class="btn soft" id="waCtaContact" target="_blank" rel="noopener" href="{{ $wa->waLink($baseMessage) }}">Tanya Harga Spesial via WhatsApp</a>
                 @endif
@@ -101,9 +105,52 @@ function nluckSwapImage(btn){
     var full = btn.dataset.full;
     var img = document.getElementById('mainProductImage');
     if(img && full) img.src = full;
+    var zoomImg = document.getElementById('zoomResultImg');
+    if(zoomImg && full) zoomImg.src = full;
     btn.parentElement.querySelectorAll('.thumb').forEach(function(t){t.classList.remove('active')});
     btn.classList.add('active');
 }
+(function nluckSetupZoom(){
+    var wrap = document.getElementById('zoomWrap');
+    var img = document.getElementById('mainProductImage');
+    var lens = document.getElementById('zoomLens');
+    var result = document.getElementById('zoomResult');
+    var resultImg = document.getElementById('zoomResultImg');
+    if(!wrap || !img || !lens || !result || !resultImg) return;
+    var enabled = window.matchMedia('(min-width:1181px)').matches;
+    window.addEventListener('resize', function(){
+        enabled = window.matchMedia('(min-width:1181px)').matches;
+        if(!enabled){ lens.style.display='none'; result.style.display='none'; }
+    });
+    function updateZoom(e){
+        if(!enabled) return;
+        var rect = img.getBoundingClientRect();
+        var x = e.clientX - rect.left;
+        var y = e.clientY - rect.top;
+        var lensSize = lens.offsetWidth;
+        var lensX = Math.min(Math.max(x - lensSize/2, 0), rect.width - lensSize);
+        var lensY = Math.min(Math.max(y - lensSize/2, 0), rect.height - lensSize);
+        lens.style.left = lensX + 'px';
+        lens.style.top = lensY + 'px';
+        var ratioX = result.offsetWidth / lensSize;
+        var ratioY = result.offsetHeight / lensSize;
+        resultImg.style.width = (rect.width * ratioX) + 'px';
+        resultImg.style.height = (rect.height * ratioY) + 'px';
+        resultImg.style.left = (-lensX * ratioX) + 'px';
+        resultImg.style.top = (-lensY * ratioY) + 'px';
+    }
+    wrap.addEventListener('mouseenter', function(){
+        if(!enabled) return;
+        if(!resultImg.src) resultImg.src = img.src;
+        lens.style.display='block';
+        result.style.display='block';
+    });
+    wrap.addEventListener('mousemove', updateZoom);
+    wrap.addEventListener('mouseleave', function(){
+        lens.style.display='none';
+        result.style.display='none';
+    });
+})();
 function nluckPickColor(btn){
     btn.parentElement.querySelectorAll('.swatch').forEach(function(s){s.classList.remove('active')});
     btn.classList.add('active');

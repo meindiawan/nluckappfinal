@@ -25,8 +25,13 @@
 .detailThumbs .thumb{padding:0;border:2px solid transparent;border-radius:12px;overflow:hidden;background:#eee5d9;cursor:pointer;line-height:0}
 .detailThumbs .thumb.active{border-color:var(--dark)}
 .detailThumbs .thumb img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block}
-.detailImg{grid-area:image;border-radius:24px;overflow:hidden;background:#eee5d9;box-shadow:var(--shadow)}
-.detailImg img{width:100%;display:block;aspect-ratio:.95/1;object-fit:cover}
+.detailImg{grid-area:image;position:relative}
+.zoomWrap{position:relative;border-radius:24px;overflow:hidden;background:#eee5d9;box-shadow:var(--shadow);cursor:zoom-in}
+.zoomWrap img{width:100%;display:block;aspect-ratio:.95/1;object-fit:cover}
+.zoomLens{position:absolute;top:0;left:0;width:150px;height:150px;border:2px solid rgba(40,53,31,.55);background:rgba(255,255,255,.25);display:none;pointer-events:none}
+.zoomResult{position:absolute;top:0;left:calc(100% + 24px);width:420px;height:420px;background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 20px 50px rgba(40,53,31,.18);overflow:hidden;display:none;z-index:40}
+.zoomResult img{position:absolute;top:0;left:0;max-width:none;display:block}
+@media(max-width:1180px){.zoomResult{display:none!important}}
 .detailInfo{grid-area:info;min-width:0}
 .detailInfo h1{font:500 clamp(32px,4vw,46px)/1.1 "Cormorant Garamond",Georgia,serif;margin:12px 0 14px}
 .rating{display:flex;align-items:center;gap:8px;margin:0 0 16px;font-size:13px;color:var(--muted)}

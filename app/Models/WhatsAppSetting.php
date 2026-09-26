@@ -38,7 +38,7 @@ class WhatsAppSetting extends Model
      */
     public function getContactWhatsappLinkAttribute(): ?string
     {
-        return $this->waLink('Halo NLUCK, saya ingin bertanya tentang produk kalian.');
+        return $this->waLink('Halo NLUCKSCARVES, saya ingin bertanya tentang produk kalian.');
     }
 
     /**
