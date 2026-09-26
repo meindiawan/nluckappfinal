@@ -18,15 +18,7 @@
             <a href="{{ route('pages.doa') }}">Doa</a>
         </div>
         <div>
-            <h4>Find Us At</h4>
-            <a href="{{ $wa->group_link }}" target="_blank" rel="noopener">Gabung Grup WhatsApp</a><br>
-            @if($wa->contact_whatsapp_link)
-                <a href="{{ $wa->contact_whatsapp_link }}" target="_blank" rel="noopener">Chat Admin</a><br>
-            @endif
-            @if($wa->contact_email)
-                <a href="mailto:{{ $wa->contact_email }}">{{ $wa->contact_email }}</a>
-            @endif
-            <div class="footer-contact">Senin–Sabtu · respon cepat lewat WhatsApp</div>
+            <h4>Find Us</h4>
             @if($wa->has_social_links)
                 <div class="footer-social">
                     @if($wa->instagram_url)

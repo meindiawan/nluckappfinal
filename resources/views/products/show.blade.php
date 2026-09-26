@@ -4,7 +4,11 @@
 @php
     $wa = $whatsappSetting ?? \App\Models\WhatsAppSetting::current();
     $galleryUrls = $product->gallery_urls;
-    $baseMessage = 'Halo NLUCK, saya tertarik dengan '.$product->name.' (Rp '.number_format($product->price,0,',','.').'). Apakah masih tersedia?';
+    $baseMessage = 'Halo NLUCK, saya ingin memesan '.$product->name.' (Rp '.number_format($product->price,0,',','.').'). Boleh dibantu info stok, warna, dan ongkirnya ya, kak?';
+    $buyNumber = $wa->contact_whatsapp ?: '082246798794';
+    $buyDigits = preg_replace('/\D+/', '', $buyNumber);
+    if (str_starts_with($buyDigits, '0')) { $buyDigits = '62' . substr($buyDigits, 1); }
+    $buyLink = 'https://wa.me/' . $buyDigits . '?text=' . rawurlencode($baseMessage);
     $qrTarget = $wa->waLink($baseMessage) ?: route('products.show', $product->slug);
     $qrImage = 'https://api.qrserver.com/v1/create-qr-code/?size=280x280&margin=8&data='.urlencode($qrTarget);
 @endphp
@@ -70,7 +74,7 @@
             @endif
 
             <div class="buy-actions">
-                <a class="btn wa" id="waCtaGroup" target="_blank" rel="noopener" href="{{ $wa->group_link }}">Pesan via Grup WhatsApp {{ $wa->group_name }} →</a>
+                <a class="btn wa" id="waCtaGroup" target="_blank" rel="noopener" href="{{ $buyLink }}">Buy Now — Pesan via WhatsApp →</a>
                 @if($wa->contact_whatsapp)
                     <a class="btn soft" id="waCtaContact" target="_blank" rel="noopener" href="{{ $wa->waLink($baseMessage) }}">Tanya Harga Spesial via WhatsApp</a>
                 @endif
