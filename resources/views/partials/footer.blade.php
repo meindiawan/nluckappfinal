@@ -2,7 +2,7 @@
 <footer class="site-footer">
     <div class="wrap footer-grid">
         <div>
-            <div class="logo"><img class="logo-mark" src="{{ asset('assets/logo/nluck-mark.png') }}" alt="NLUCK"><img class="logo-word" src="{{ asset('assets/logo/nluck-wordmark.png') }}" alt="NLUCK SCARVES"></div>
+            <div class="logo"><img class="logo-combined" src="{{ asset('assets/logo/nluck-logo-combined.png') }}" alt="NLUCK SCARVES"></div>
             <p>Elegan dalam setiap langkah. Koleksi modest wear untuk keseharian yang tenang, hangat, dan personal.</p>
             @if($wa->has_social_links)
                 <div class="footer-social">

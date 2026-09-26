@@ -57,26 +57,17 @@
   /* ---------- header ---------- */
   header{ padding:22px 0; }
   .header-row{ display:flex; align-items:center; justify-content:space-between; }
-  .logo{ display:flex; align-items:flex-start; justify-content:flex-start; gap:10px; }
-  .logo .fixed-mark{
+  .logo{ display:flex; align-items:center; justify-content:flex-start; }
+  .logo .fixed-combined{
     display:block;
-    height:32px;
+    height:30px;
     width:auto;
     max-width:100%;
     object-fit:contain;
     flex:0 0 auto;
   }
-  .logo .fixed-wordmark{
-    display:block;
-    height:23px;
-    width:auto;
-    max-width:100%;
-    object-fit:contain;
-    flex:0 0 auto;
-    margin-top:2px;
-  }
-  /* Brand lock: the NLUCK mark & wordmark are fixed assets and are never restyled by themes/layouts. */
-  .logo .fixed-mark,.logo .fixed-wordmark{ filter:none !important; }
+  /* Brand lock: the NLUCK logo is a fixed asset and is never restyled by themes/layouts. */
+  .logo .fixed-combined{ filter:none !important; }
   .collection-tag{ font-size:11px; letter-spacing:.14em; color:var(--accent); font-weight:600; }
 
   /* ---------- hero ---------- */
@@ -154,10 +145,9 @@
   .welcome-card .fine{ font-size:11px; color:var(--ink-soft); margin-top:12px; }
 
   footer{ background:var(--dark); color:#EBD9C8; text-align:center; padding:22px; margin-top:10px; font-size:12px; }
-  footer .footer-logo{ display:flex; align-items:flex-start; justify-content:center; gap:8px; }
-  footer .footer-logo .footer-mark{ display:block; height:22px; width:auto; object-fit:contain; flex:0 0 auto; }
-  footer .footer-logo .footer-wordmark{ display:block; height:16px; width:auto; object-fit:contain; flex:0 0 auto; margin-top:3px; }
-  footer .footer-heart{ color:var(--accent); font-size:13px; margin-left:2px; align-self:center; }
+  footer .footer-logo{ display:flex; align-items:center; justify-content:center; gap:6px; }
+  footer .footer-logo .footer-wordmark{ display:block; height:16px; width:auto; object-fit:contain; flex:0 0 auto; }
+  footer .footer-heart{ color:var(--accent); font-size:13px; }
   footer .tagline{ font-family:'Cormorant Garamond',serif; font-style:italic; font-size:12.5px; color:#C9A46A; margin-top:6px; }
 
   @media (max-width: 860px){
@@ -326,8 +316,7 @@ function safeAssetUrl(value){
     <div class="header-row">
       <div class="logo" aria-label="NLUCK Scarves">
         <!-- FIXED NLUCK logo — do not replace, recolor, or restyle -->
-        <img class="fixed-mark" data-asset="logo_mark" src="{{ asset('assets/logo/nluck-mark.png') }}" alt="NLUCK">
-        <img class="fixed-wordmark" data-asset="logo_mark" src="{{ asset('assets/logo/nluck-wordmark.png') }}" alt="NLUCK Scarves">
+        <img class="fixed-combined" data-asset="logo_mark" src="{{ asset('assets/logo/nluck-logo-combined.png') }}" alt="NLUCK Scarves">
       </div>
       <!-- VARIABLE per-article text -->
       <div class="collection-tag" data-field="collection_badge_text" contenteditable="true">LIMITED SIGNATURE COLLECTION</div>
@@ -508,7 +497,7 @@ function safeAssetUrl(value){
           @if($formSetting->show_birth_date)<div class="field"><label for="lead-birth"><span class="dot"></span>Tanggal Lahir <span class="opt">(opsional)</span></label><input id="lead-birth" name="birth_date" type="text" inputmode="numeric" maxlength="10" placeholder="DD/MM/YYYY" value="{{ old('birth_date') }}"></div>@endif
           @if($formSetting->show_instagram)<div class="field"><label for="lead-instagram"><span class="dot"></span>Media Sosial <span class="opt">(opsional)</span></label><input id="lead-instagram" name="instagram" type="text" value="{{ old('instagram') }}" placeholder="Instagram, Facebook, atau lainnya"></div>@endif
           @if($formSetting->require_consent)<div class="checkbox-row"><input id="lead-consent" name="consent" value="1" type="checkbox" required><label for="lead-consent">{{ $formSetting->consent_text }}</label></div>@endif
-          <button type="submit" class="btn-primary">{{ $formSetting->cta_text }}</button>
+          <button type="submit" class="btn-primary">JOIN NLUCK SOCIETY</button>
         </form>
       </div>
     </div>
@@ -518,7 +507,6 @@ function safeAssetUrl(value){
 
 <footer>
   <div class="footer-logo" aria-label="NLUCK Scarves">
-    <img class="footer-mark" src="{{ asset('assets/logo/nluck-mark.png') }}" alt="NLUCK">
     <img class="footer-wordmark" src="{{ asset('assets/logo/nluck-wordmark.png') }}" alt="NLUCK Scarves">
     <span class="footer-heart">♡</span>
   </div>
