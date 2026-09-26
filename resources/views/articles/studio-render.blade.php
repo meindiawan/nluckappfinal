@@ -57,17 +57,25 @@
   /* ---------- header ---------- */
   header{ padding:22px 0; }
   .header-row{ display:flex; align-items:center; justify-content:space-between; }
-  .logo{ display:flex; align-items:center; justify-content:center; gap:0; }
-  .logo .fixed-wordmark{
+  .logo{ display:flex; align-items:center; justify-content:flex-start; gap:10px; }
+  .logo .fixed-mark{
     display:block;
-    width:132px;
-    height:auto;
+    height:32px;
+    width:auto;
     max-width:100%;
     object-fit:contain;
     flex:0 0 auto;
   }
-  /* Brand lock: the NLUCK wordmark is a fixed asset and is never restyled by themes/layouts. */
-  .logo .fixed-wordmark{ filter:none !important; }
+  .logo .fixed-wordmark{
+    display:block;
+    height:23px;
+    width:auto;
+    max-width:100%;
+    object-fit:contain;
+    flex:0 0 auto;
+  }
+  /* Brand lock: the NLUCK mark & wordmark are fixed assets and are never restyled by themes/layouts. */
+  .logo .fixed-mark,.logo .fixed-wordmark{ filter:none !important; }
   .collection-tag{ font-size:11px; letter-spacing:.14em; color:var(--accent); font-weight:600; }
 
   /* ---------- hero ---------- */
@@ -125,7 +133,7 @@
   .note-card{ position:absolute; right:14px; bottom:14px; width:180px; background:#FBF8F3; border-radius:2px; padding:14px 14px; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:11.5px; color:var(--dark); box-shadow:0 6px 18px rgba(0,0,0,.12); z-index:2; }
 
   /* ---------- society / form ---------- */
-  .society-grid{ display:grid; grid-template-columns:260px 1fr 240px; gap:26px; min-width:0; }
+  .society-grid{ display:grid; grid-template-columns:240px 260px 1fr; gap:26px; min-width:0; }
   .society-grid > *{ min-width:0; }
   .society-grid h2{ font-size:clamp(18px,3.8vw,22px); color:var(--dark); font-weight:500; margin:0 0 10px; overflow-wrap:break-word; }
   .society-grid p.desc{ font-size:12.5px; color:var(--ink-soft); margin:0 0 16px; }
@@ -134,6 +142,7 @@
   .field{ margin-bottom:10px; }
   .field label{ display:flex; align-items:center; gap:8px; border:1px solid var(--line); border-radius:4px; padding:10px 12px; font-size:12.5px; color:var(--ink-soft); background:#fff; }
   .field .dot{ width:6px; height:6px; border-radius:50%; background:var(--accent); flex:none; }
+  .field .opt{ font-size:.9em; font-weight:400; opacity:.55; margin-left:2px; }
   .checkbox-row{ display:flex; gap:8px; align-items:flex-start; font-size:11.5px; color:var(--ink-soft); margin:12px 0 16px; }
   .btn-primary{ display:block; width:100%; text-align:center; background:var(--dark); color:#F3E7DD; padding:13px; border-radius:4px; font-size:12.5px; letter-spacing:.08em; font-weight:600; text-decoration:none; }
   .welcome-card{ position:relative; border:1px solid var(--accent); border-radius:4px; padding:24px 18px; text-align:center; }
@@ -311,8 +320,9 @@ function safeAssetUrl(value){
   <header>
     <div class="header-row">
       <div class="logo" aria-label="NLUCK Scarves">
-        <!-- FIXED NLUCK wordmark — do not replace, recolor, or restyle -->
-        <img class="fixed-wordmark" data-asset="logo_mark" src="{{ asset('studio/assets/nluck-wordmark.png') }}" alt="NLUCK Scarves">
+        <!-- FIXED NLUCK logo — do not replace, recolor, or restyle -->
+        <img class="fixed-mark" data-asset="logo_mark" src="{{ asset('assets/logo/nluck-mark.png') }}" alt="NLUCK">
+        <img class="fixed-wordmark" data-asset="logo_mark" src="{{ asset('assets/logo/nluck-wordmark.png') }}" alt="NLUCK Scarves">
       </div>
       <!-- VARIABLE per-article text -->
       <div class="collection-tag" data-field="collection_badge_text" contenteditable="true">LIMITED SIGNATURE COLLECTION</div>
@@ -456,6 +466,15 @@ function safeAssetUrl(value){
   <!-- =================== NLUCK SOCIETY =================== -->
   <section class="panel" id="societySection">
     <div class="society-grid">
+      <div class="welcome-card">
+        <div class="frame-slot"></div>
+        <div class="eyebrow2" data-field="welcome_eyebrow" contenteditable="true">Welcome to<br>NLUCK Society</div>
+        <p style="font-size:11px;color:var(--ink-soft);margin:8px 0 0;" data-field="welcome_intro" contenteditable="true">Dapatkan diskon spesial untuk pembelian berikutnya.</p>
+        <div class="pct" data-field="promo_value" contenteditable="true">10% OFF</div>
+        <div class="pct-label" data-field="promo_label" contenteditable="true">UNTUK MEMBER BARU</div>
+        <div class="fine" data-field="promo_terms" contenteditable="true">Berlaku untuk semua produk NLUCK Scarves.</div>
+      </div>
+
       <div>
         <h2 data-field="society_title" contenteditable="true">Jadilah Bagian dari NLUCK Society</h2>
         <p class="desc" data-field="society_description" contenteditable="true">Isi data di samping untuk menjadi member dan dapatkan berbagai keuntungan eksklusif hanya untuk Anda.</p>
@@ -479,22 +498,13 @@ function safeAssetUrl(value){
           @csrf
           @if($formSetting->show_name)<div class="field"><label for="lead-name"><span class="dot"></span>Nama Lengkap</label><input id="lead-name" name="name" type="text" value="{{ old('name') }}" @required(true) autocomplete="name"></div>@endif
           @if($formSetting->show_whatsapp)<div class="field"><label for="lead-whatsapp"><span class="dot"></span>No. WhatsApp</label><input id="lead-whatsapp" name="whatsapp" type="tel" value="{{ old('whatsapp') }}" @required(true) autocomplete="tel" placeholder="08xxxxxxxxxx"></div>@endif
-          @if($formSetting->show_email)<div class="field"><label for="lead-email"><span class="dot"></span>Email</label><input id="lead-email" name="email" type="email" value="{{ old('email') }}" @required($formSetting->require_email) autocomplete="email"></div>@endif
-          @if($formSetting->show_birth_date)<div class="field"><label for="lead-birth"><span class="dot"></span>Tanggal Lahir</label><input id="lead-birth" name="birth_date" type="date" value="{{ old('birth_date') }}" @required($formSetting->require_birth_date)></div>@endif
-          @if($formSetting->show_city)<div class="field"><label for="lead-city"><span class="dot"></span>Kota</label><input id="lead-city" name="city" type="text" value="{{ old('city') }}" @required($formSetting->require_city) autocomplete="address-level2"></div>@endif
-          @if($formSetting->show_instagram)<div class="field"><label for="lead-instagram"><span class="dot"></span>Instagram</label><input id="lead-instagram" name="instagram" type="text" value="{{ old('instagram') }}" @required($formSetting->require_instagram) placeholder="@username"></div>@endif
+          @if($formSetting->show_city)<div class="field"><label for="lead-city"><span class="dot"></span>Kota</label><input id="lead-city" name="city" type="text" value="{{ old('city') }}" @required(true) autocomplete="address-level2"></div>@endif
+          @if($formSetting->show_email)<div class="field"><label for="lead-email"><span class="dot"></span>Email <span class="opt">(opsional)</span></label><input id="lead-email" name="email" type="email" value="{{ old('email') }}" autocomplete="email"></div>@endif
+          @if($formSetting->show_birth_date)<div class="field"><label for="lead-birth"><span class="dot"></span>Tanggal Lahir <span class="opt">(opsional)</span></label><input id="lead-birth" name="birth_date" type="text" inputmode="numeric" maxlength="10" placeholder="DD/MM/YYYY" value="{{ old('birth_date') }}"></div>@endif
+          @if($formSetting->show_instagram)<div class="field"><label for="lead-instagram"><span class="dot"></span>Media Sosial <span class="opt">(opsional)</span></label><input id="lead-instagram" name="instagram" type="text" value="{{ old('instagram') }}" placeholder="Instagram, Facebook, atau lainnya"></div>@endif
           @if($formSetting->require_consent)<div class="checkbox-row"><input id="lead-consent" name="consent" value="1" type="checkbox" required><label for="lead-consent">{{ $formSetting->consent_text }}</label></div>@endif
           <button type="submit" class="btn-primary">{{ $formSetting->cta_text }}</button>
         </form>
-      </div>
-
-      <div class="welcome-card">
-        <div class="frame-slot"></div>
-        <div class="eyebrow2" data-field="welcome_eyebrow" contenteditable="true">Welcome to<br>NLUCK Society</div>
-        <p style="font-size:11px;color:var(--ink-soft);margin:8px 0 0;" data-field="welcome_intro" contenteditable="true">Dapatkan diskon spesial untuk pembelian berikutnya.</p>
-        <div class="pct" data-field="promo_value" contenteditable="true">10% OFF</div>
-        <div class="pct-label" data-field="promo_label" contenteditable="true">UNTUK MEMBER BARU</div>
-        <div class="fine" data-field="promo_terms" contenteditable="true">Berlaku untuk semua produk NLUCK Scarves.</div>
       </div>
     </div>
   </section>
@@ -657,6 +667,15 @@ window.NLUCK_PUBLIC_DESIGN = @json($design);
   if(phone){
     phone.addEventListener('input',function(){
       this.value=this.value.replace(/[^\d+().\-\s]/g,'').slice(0,30);
+    });
+  }
+  const birth=form.querySelector('input[name="birth_date"]');
+  if(birth){
+    birth.addEventListener('input',function(){
+      let d=this.value.replace(/\D/g,'').slice(0,8);
+      if(d.length>4) d=d.slice(0,2)+'/'+d.slice(2,4)+'/'+d.slice(4);
+      else if(d.length>2) d=d.slice(0,2)+'/'+d.slice(2);
+      this.value=d;
     });
   }
   form.addEventListener('submit',function(){

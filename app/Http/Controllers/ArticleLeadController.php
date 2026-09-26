@@ -29,16 +29,16 @@ class ArticleLeadController extends Controller
                 ? ['required', 'string', 'max:30', 'regex:/^[0-9+()\\-\\s.]{3,30}$/']
                 : ['nullable'],
             'email' => $setting->show_email
-                ? [$setting->require_email ? 'required' : 'nullable', 'string', 'max:150']
+                ? ['nullable', 'string', 'max:150']
                 : ['nullable'],
             'birth_date' => $setting->show_birth_date
-                ? [$setting->require_birth_date ? 'required' : 'nullable', 'date']
+                ? ['nullable', 'date_format:d/m/Y']
                 : ['nullable'],
             'city' => $setting->show_city
-                ? [$setting->require_city ? 'required' : 'nullable', 'string', 'max:100']
+                ? ['required', 'string', 'max:100']
                 : ['nullable'],
             'instagram' => $setting->show_instagram
-                ? [$setting->require_instagram ? 'required' : 'nullable', 'string', 'max:100']
+                ? ['nullable', 'string', 'max:100']
                 : ['nullable'],
             'consent' => $setting->require_consent ? ['accepted'] : ['nullable'],
         ];
@@ -46,11 +46,15 @@ class ArticleLeadController extends Controller
         $data = $request->validate($rules, [
             'whatsapp.regex' => 'Nomor WhatsApp hanya boleh berisi angka, spasi, tanda +, -, titik, atau tanda kurung (minimal 3 karakter).',
             'email.max' => 'Email maksimal 150 karakter.',
-            'birth_date.date' => 'Tanggal lahir tidak valid.',
+            'birth_date.date_format' => 'Format tanggal lahir harus DD/MM/YYYY.',
         ]);
 
         if (! empty($data['whatsapp'])) {
             $data['whatsapp'] = preg_replace('/[^0-9+]/', '', $data['whatsapp']);
+        }
+
+        if (! empty($data['birth_date'])) {
+            $data['birth_date'] = \Carbon\Carbon::createFromFormat('d/m/Y', $data['birth_date'])->format('Y-m-d');
         }
 
         $data = array_merge([
