@@ -57,7 +57,7 @@
   /* ---------- header ---------- */
   header{ padding:22px 0; }
   .header-row{ display:flex; align-items:center; justify-content:space-between; }
-  .logo{ display:flex; align-items:center; justify-content:flex-start; gap:10px; }
+  .logo{ display:flex; align-items:flex-start; justify-content:flex-start; gap:10px; }
   .logo .fixed-mark{
     display:block;
     height:32px;
@@ -73,6 +73,7 @@
     max-width:100%;
     object-fit:contain;
     flex:0 0 auto;
+    margin-top:2px;
   }
   /* Brand lock: the NLUCK mark & wordmark are fixed assets and are never restyled by themes/layouts. */
   .logo .fixed-mark,.logo .fixed-wordmark{ filter:none !important; }
@@ -153,7 +154,11 @@
   .welcome-card .fine{ font-size:11px; color:var(--ink-soft); margin-top:12px; }
 
   footer{ background:var(--dark); color:#EBD9C8; text-align:center; padding:22px; margin-top:10px; font-size:12px; }
-  footer .tagline{ font-family:'Cormorant Garamond',serif; font-style:italic; font-size:12.5px; color:#C9A46A; margin-top:2px; }
+  footer .footer-logo{ display:flex; align-items:flex-start; justify-content:center; gap:8px; }
+  footer .footer-logo .footer-mark{ display:block; height:22px; width:auto; object-fit:contain; flex:0 0 auto; }
+  footer .footer-logo .footer-wordmark{ display:block; height:16px; width:auto; object-fit:contain; flex:0 0 auto; margin-top:3px; }
+  footer .footer-heart{ color:var(--accent); font-size:13px; margin-left:2px; align-self:center; }
+  footer .tagline{ font-family:'Cormorant Garamond',serif; font-style:italic; font-size:12.5px; color:#C9A46A; margin-top:6px; }
 
   @media (max-width: 860px){
     .about-grid, .pesan-grid, .society-grid{ grid-template-columns:1fr; }
@@ -512,7 +517,11 @@ function safeAssetUrl(value){
 </div>
 
 <footer>
-  <div>NLUCK SCARVES ♡</div>
+  <div class="footer-logo" aria-label="NLUCK Scarves">
+    <img class="footer-mark" src="{{ asset('assets/logo/nluck-mark.png') }}" alt="NLUCK">
+    <img class="footer-wordmark" src="{{ asset('assets/logo/nluck-wordmark.png') }}" alt="NLUCK Scarves">
+    <span class="footer-heart">♡</span>
+  </div>
   <div class="tagline" data-field="footer_tagline" contenteditable="true">Grace Beyond Beauty</div>
 </footer>
 
