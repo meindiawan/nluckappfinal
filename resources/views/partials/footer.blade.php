@@ -4,6 +4,29 @@
         <div>
             <div class="logo"><img class="logo-combined" src="{{ asset('assets/logo/nluck-logo-combined.png') }}" alt="NLUCK SCARVES"></div>
             <p>Elegan dalam setiap langkah. Koleksi modest wear untuk keseharian yang tenang, hangat, dan personal.</p>
+        </div>
+        <div>
+            <h4>Menu</h4>
+            <a href="{{ route('catalog') }}">Beranda</a><br>
+            <a href="{{ route('catalog.browse') }}">Koleksi</a><br>
+            <a href="{{ route('articles.index') }}">Artikel</a>
+        </div>
+        <div>
+            <h4>Cerita</h4>
+            <a href="{{ route('pages.about') }}">Tentang Kami</a><br>
+            <a href="{{ route('pages.philosophy') }}">Filosofi</a><br>
+            <a href="{{ route('pages.doa') }}">Doa</a>
+        </div>
+        <div>
+            <h4>Find Us At</h4>
+            <a href="{{ $wa->group_link }}" target="_blank" rel="noopener">Gabung Grup WhatsApp</a><br>
+            @if($wa->contact_whatsapp_link)
+                <a href="{{ $wa->contact_whatsapp_link }}" target="_blank" rel="noopener">Chat Admin</a><br>
+            @endif
+            @if($wa->contact_email)
+                <a href="mailto:{{ $wa->contact_email }}">{{ $wa->contact_email }}</a>
+            @endif
+            <div class="footer-contact">Senin–Sabtu · respon cepat lewat WhatsApp</div>
             @if($wa->has_social_links)
                 <div class="footer-social">
                     @if($wa->instagram_url)
@@ -29,29 +52,6 @@
                     @endif
                 </div>
             @endif
-        </div>
-        <div>
-            <h4>Menu</h4>
-            <a href="{{ route('catalog') }}">Beranda</a><br>
-            <a href="{{ route('catalog.browse') }}">Koleksi</a><br>
-            <a href="{{ route('articles.index') }}">Artikel</a>
-        </div>
-        <div>
-            <h4>Cerita</h4>
-            <a href="{{ route('pages.about') }}">Tentang Kami</a><br>
-            <a href="{{ route('pages.philosophy') }}">Filosofi</a><br>
-            <a href="{{ route('pages.doa') }}">Doa</a>
-        </div>
-        <div>
-            <h4>Hubungi Kami</h4>
-            <a href="{{ $wa->group_link }}" target="_blank" rel="noopener">Gabung Grup WhatsApp</a><br>
-            @if($wa->contact_whatsapp_link)
-                <a href="{{ $wa->contact_whatsapp_link }}" target="_blank" rel="noopener">Chat Admin</a><br>
-            @endif
-            @if($wa->contact_email)
-                <a href="mailto:{{ $wa->contact_email }}">{{ $wa->contact_email }}</a>
-            @endif
-            <div class="footer-contact">Senin–Sabtu · respon cepat lewat WhatsApp</div>
         </div>
     </div>
     <div class="wrap copyright">© {{ date('Y') }} NLUCK. All rights reserved.</div>

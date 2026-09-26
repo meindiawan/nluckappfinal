@@ -446,7 +446,6 @@ function safeAssetUrl(value){
         <div class="asset-slot" data-asset="pesan_photo">
           <span class="asset-label"><b>pesan_photo</b><span>800 × 600 px — foto vas/lifestyle</span></span>
         </div>
-        <div class="note-card" data-field="closing_note_text" contenteditable="true">Terima kasih telah menjadi bagian dari perjalanan NLUCK Scarves. Sampai bertemu di koleksi berikutnya.<br>Grace Beyond Beauty ♡</div>
       </div>
     </div>
   </section>
