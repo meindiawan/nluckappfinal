@@ -107,7 +107,7 @@
   .doa-item > *{ min-width:0; }
   .doa-num-block{ background:var(--dark); color:#F3E7DD; padding:18px 16px; display:flex; flex-direction:column; gap:10px; }
   .doa-num-block .num{ font-family:'Cormorant Garamond',serif; font-size:22px; color:#D7B98A; }
-  .doa-num-block .icon-slot{ width:26px; height:26px; border-radius:50%; }
+  .doa-num-block .icon-slot{ display:none!important; }
   .doa-num-block .label{ font-size:11px; letter-spacing:.03em; font-weight:600; line-height:1.35; }
   .doa-body{ padding:18px 20px; }
   .doa-body .arabic{ font-size:clamp(17px,4vw,20px); color:var(--dark); margin:0 0 10px; line-height:1.9; overflow-wrap:break-word; }
@@ -367,8 +367,6 @@ function safeAssetUrl(value){
   <div class="doa-item" data-doa-id="1">
     <div class="doa-num-block">
       <div class="num">01</div>
-      <!-- FIXED icon asset (pilih dari set ikon doa) -->
-      <div class="asset-slot icon-slot" data-asset="icon_doa_sprout"></div>
       <div class="label" data-field="doa_1_title" contenteditable="true">DOA KETENANGAN DALAM PERJALANAN</div>
     </div>
     <div class="doa-body">
@@ -381,7 +379,6 @@ function safeAssetUrl(value){
   <div class="doa-item" data-doa-id="2">
     <div class="doa-num-block">
       <div class="num">02</div>
-      <div class="asset-slot icon-slot" data-asset="icon_doa_leaf"></div>
       <div class="label" data-field="doa_2_title" contenteditable="true">DOA KELANCARAN URUSAN</div>
     </div>
     <div class="doa-body">
@@ -395,38 +392,11 @@ function safeAssetUrl(value){
   <div class="doa-item" data-doa-id="3">
     <div class="doa-num-block">
       <div class="num">03</div>
-      <div class="asset-slot icon-slot" data-asset="icon_doa_sparkle"></div>
       <div class="label" data-field="doa_3_title" contenteditable="true">DOA KEKUATAN DAN KETEGUHAN</div>
     </div>
     <div class="doa-body">
       <p class="arabic" data-field="doa_3_arabic" contenteditable="true">يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ</p>
       <p class="translation" data-field="doa_3_translation" contenteditable="true">"Wahai Dzat yang membolak-balikkan hati, tetapkanlah hatiku pada agama-Mu." (HR. Tirmidzi)</p>
-    </div>
-    <div class="doa-deco"><div class="deco-floral" aria-hidden="true"><svg viewBox="0 0 140 200"><use href="#deco-floral-sprig"/></svg></div></div>
-  </div>
-
-  <div class="doa-item" data-doa-id="4">
-    <div class="doa-num-block">
-      <div class="num">04</div>
-      <div class="asset-slot icon-slot" data-asset="icon_doa_flower"></div>
-      <div class="label" data-field="doa_4_title" contenteditable="true">DOA KEBERKAHAN ILMU DAN AMAL</div>
-    </div>
-    <div class="doa-body">
-      <p class="arabic" data-field="doa_4_arabic" contenteditable="true">رَبِّ زِدْنِي عِلْمًا وَارْزُقْنِي فَهْمًا وَاجْعَلْنِي مِنَ الصَّالِحِينَ</p>
-      <p class="translation" data-field="doa_4_translation" contenteditable="true">"Ya Tuhanku, tambahkanlah kepadaku ilmu dan berilah aku pemahaman, dan jadikanlah aku termasuk orang-orang yang saleh." (QS. Taha: 114)</p>
-    </div>
-    <div class="doa-deco"><div class="deco-floral" aria-hidden="true"><svg viewBox="0 0 140 200"><use href="#deco-floral-sprig"/></svg></div></div>
-  </div>
-
-  <div class="doa-item" data-doa-id="5">
-    <div class="doa-num-block">
-      <div class="num">05</div>
-      <div class="asset-slot icon-slot" data-asset="icon_doa_moon"></div>
-      <div class="label" data-field="doa_5_title" contenteditable="true">DOA PERLINDUNGAN DAN KEBAIKAN</div>
-    </div>
-    <div class="doa-body">
-      <p class="arabic" data-field="doa_5_arabic" contenteditable="true">رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ</p>
-      <p class="translation" data-field="doa_5_translation" contenteditable="true">"Ya Tuhan kami, berikanlah kepada kami kebaikan di dunia dan kebaikan di akhirat dan lindungilah kami dari azab neraka." (QS. Al-Baqarah: 201)</p>
     </div>
     <div class="doa-deco"><div class="deco-floral" aria-hidden="true"><svg viewBox="0 0 140 200"><use href="#deco-floral-sprig"/></svg></div></div>
   </div>
@@ -494,7 +464,7 @@ function safeAssetUrl(value){
           @if($formSetting->show_city)<div class="field"><label for="lead-city"><span class="dot"></span>Kota</label><input id="lead-city" name="city" type="text" value="{{ old('city') }}" @required(true) autocomplete="address-level2"></div>@endif
           @if($formSetting->show_email)<div class="field"><label for="lead-email"><span class="dot"></span>Email <span class="opt">(opsional)</span></label><input id="lead-email" name="email" type="email" value="{{ old('email') }}" autocomplete="email"></div>@endif
           @if($formSetting->show_birth_date)<div class="field"><label for="lead-birth"><span class="dot"></span>Tanggal Lahir <span class="opt">(opsional)</span></label><input id="lead-birth" name="birth_date" type="text" inputmode="numeric" maxlength="10" placeholder="DD/MM/YYYY" value="{{ old('birth_date') }}"></div>@endif
-          @if($formSetting->show_instagram)<div class="field"><label for="lead-instagram"><span class="dot"></span>Media Sosial <span class="opt">(opsional)</span></label><input id="lead-instagram" name="instagram" type="text" value="{{ old('instagram') }}" placeholder="Instagram, Facebook, atau lainnya"></div>@endif
+          @if($formSetting->show_instagram)<div class="field"><label for="lead-instagram"><span class="dot"></span>Media Sosial <span class="opt">(opsional)</span></label><input id="lead-instagram" name="instagram" type="text" value="{{ old('instagram') }}"></div>@endif
           @if($formSetting->require_consent)<div class="checkbox-row"><input id="lead-consent" name="consent" value="1" type="checkbox" required><label for="lead-consent">{{ $formSetting->consent_text }}</label></div>@endif
           <button type="submit" class="btn-primary">JOIN NLUCK SOCIETY</button>
         </form>
