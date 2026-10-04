@@ -84,9 +84,13 @@
   /* ---------- panel ---------- */
   .panel{ background:var(--panel); border:1px solid var(--line); border-radius:6px; padding:34px; margin-bottom:26px; }
 
-  .about-grid{ display:grid; grid-template-columns:220px 1fr 160px; gap:28px; align-items:center; min-width:0; }
+  /* Tentang artikel: foto filosofi dibuat horizontal di atas judul.
+     Hanya susunan bagian ini yang diubah; asset, field, teks, dan dekorasi tetap sama. */
+  .about-grid{ display:grid; grid-template-columns:minmax(0,1fr) 160px; grid-template-areas:"image image" "copy deco"; gap:22px 28px; align-items:center; min-width:0; }
   .about-grid > *{ min-width:0; }
-  .about-grid .asset-slot{ aspect-ratio:1/1; border-radius:4px; }
+  .about-grid > .asset-slot{ grid-area:image; width:100%; height:auto; aspect-ratio:16 / 6.5; min-height:180px; border-radius:4px; }
+  .about-grid > div:not(.asset-slot):not(.deco){ grid-area:copy; }
+  .about-grid > .deco{ grid-area:deco; }
   .about-grid h2{ font-size:clamp(20px,4.2vw,26px); color:var(--dark); font-weight:500; margin:2px 0 0; overflow-wrap:break-word; }
   .about-grid .filosofi{ font-family:'Cormorant Garamond',serif; font-style:italic; font-size:16px; color:var(--accent); margin:0 0 12px; }
   .about-grid p{ font-size:13px; margin:0 0 10px; color:var(--ink); overflow-wrap:break-word; }
@@ -148,9 +152,10 @@
 
   @media (max-width: 860px){
     .about-grid, .pesan-grid, .society-grid{ grid-template-columns:1fr; }
+    .about-grid{ grid-template-areas:"image" "copy"; }
     .doa-item{ grid-template-columns:1fr; }
     .doa-deco, .about-grid .deco{ display:none; }
-    .about-grid .asset-slot{ max-width:280px; margin:0 auto; }
+    .about-grid > .asset-slot{ max-width:none; width:100%; min-height:150px; margin:0; aspect-ratio:16 / 8; }
     .society-grid{ gap:20px; }
   }
   @media (max-width: 640px){
@@ -343,9 +348,9 @@
   <section class="panel" id="aboutSection">
     <div class="eyebrow" style="margin-bottom:14px;">✦ TENTANG ARTIKEL ANDA</div>
     <div class="about-grid">
-      <!-- VARIABLE per-article image -->
+      <!-- VARIABLE per-article image — horizontal, di atas judul -->
       <div class="asset-slot" data-asset="fabric_texture_photo">
-        <span class="asset-label"><b>fabric_texture_photo</b><span>600 × 600 px — close-up motif kain</span></span>
+        <span class="asset-label"><b>fabric_texture_photo</b><span>1600 × 650 px — foto motif kain horizontal</span></span>
       </div>
       <div>
         <h2 data-field="collection_name" contenteditable="true">Infinia Signature</h2>
