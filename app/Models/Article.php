@@ -31,6 +31,7 @@ class Article extends Model {
  public function getRouteKeyName(){return 'slug';}
  public function design():array{return $this->content_json?(json_decode($this->content_json,true)?:[]):[];}
  public function leads():HasMany{return $this->hasMany(ArticleLead::class);}
+ public function codes():HasMany{return $this->hasMany(ArticleCode::class);}
  public function views():HasMany{return $this->hasMany(ArticleView::class);}
  protected static function booted(){static::creating(function($article){if(!$article->slug)$article->slug=Str::slug($article->title);});}
 }

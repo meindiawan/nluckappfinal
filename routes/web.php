@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\AnalyticsController;
+use App\Http\Controllers\Admin\ArticleCodeController;
 use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use App\Http\Controllers\Admin\ArticleFormSettingController;
 use App\Http\Controllers\Admin\ArticleWorkflowController;
@@ -61,8 +62,13 @@ Route::prefix('admin')->name('admin.')->group(function(){
   Route::get('/articles/{article}/studio/data',[AdminArticleController::class,'studioData'])->name('articles.studio.data');
   Route::post('/articles/{article}/studio/save',[AdminArticleController::class,'studioSave'])->name('articles.studio.save');
   Route::get('/articles/{article}/preview',[AdminArticleController::class,'preview'])->name('articles.preview');
-  Route::get('/articles/{article}/qr',[AdminArticleController::class,'qr'])->name('articles.qr');
-  Route::get('/articles/{article}/qr/download',[AdminArticleController::class,'qrDownload'])->name('articles.qr.download');
+  // QR sekali pakai per artikel
+  Route::get('/articles/{article}/qr',[ArticleCodeController::class,'index'])->name('articles.qr');
+  Route::get('/articles/{article}/qr/print',[ArticleCodeController::class,'print'])->name('articles.qr.print');
+  Route::post('/articles/{article}/qr/generate',[ArticleCodeController::class,'generate'])->name('articles.qr.generate');
+  Route::post('/articles/{article}/qr/revoke-unused',[ArticleCodeController::class,'revokeUnused'])->name('articles.qr.revoke-unused');
+  Route::post('/articles/{article}/qr/{code}/revoke',[ArticleCodeController::class,'revoke'])->name('articles.qr.revoke');
+  Route::post('/articles/{article}/qr/{code}/restore',[ArticleCodeController::class,'restore'])->name('articles.qr.restore');
   Route::post('/articles/{article}/publish',[ArticleWorkflowController::class,'publish'])->name('articles.publish');
   Route::post('/articles/{article}/unpublish',[AdminArticleController::class,'unpublish'])->name('articles.unpublish');
   Route::post('/articles/{article}/duplicate',[ArticleWorkflowController::class,'duplicate'])->name('articles.duplicate');

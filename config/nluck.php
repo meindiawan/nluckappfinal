@@ -6,6 +6,15 @@
 | walaupun `php artisan config:cache` sudah dijalankan di production.
 */
 return [
+    /*
+    | QR sekali pakai. Jika true, form pendaftaran di halaman artikel HANYA bisa
+    | dikirim lewat QR yang valid & belum terpakai (satu QR = satu kali daftar).
+    | Isi QR_BASE_URL dengan domain produksi (mis. https://nluck.id) agar QR yang
+    | dicetak tidak berisi alamat localhost.
+    */
+    'require_code' => env('NLUCK_REQUIRE_CODE', true),
+    'qr_base_url' => env('QR_BASE_URL'),
+
     'admin' => [
         'username' => env('ADMIN_USERNAME'),
         'password' => env('ADMIN_PASSWORD'),

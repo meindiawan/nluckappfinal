@@ -461,9 +461,23 @@ function safeAssetUrl(value){
           <div class="eyebrow2">{{ $formSetting->title }}</div>
           @if($formSetting->description)<p class="lead-form-description">{{ $formSetting->description }}</p>@endif
         </div>
+        @php
+          $codeState = $codeState ?? 'open'; // open | valid | preview | none | used | revoked | invalid
+          $codeNotices = [
+            'none'    => 'Pendaftaran NLUCK Society dilakukan lewat QR yang ada pada kemasan produk NLUCK. Silakan scan QR pada produk Anda untuk mengisi data.',
+            'used'    => 'QR ini sudah digunakan. Setiap QR hanya berlaku untuk satu kali pendaftaran. Jika Anda merasa ini keliru, silakan hubungi admin NLUCK.',
+            'revoked' => 'QR ini sudah tidak berlaku. Silakan hubungi admin NLUCK.',
+            'invalid' => 'QR tidak dikenali. Silakan scan ulang QR pada produk NLUCK Anda atau hubungi admin NLUCK.',
+          ];
+        @endphp
+        @if(isset($codeNotices[$codeState]))
+        <div class="lead-code-notice" role="status" style="padding:16px 18px;border-radius:10px;border:1px solid rgba(0,0,0,.14);background:rgba(255,255,255,.72);font-size:14px;line-height:1.6">{{ $codeNotices[$codeState] }}</div>
+        @else
         @if($errors->any())<div class="lead-error">{{ $errors->first() }}</div>@endif
         <form method="POST" action="{{ route('articles.leads.store', $article->slug) }}" class="nluck-lead-form">
           @csrf
+          @if(!empty($codeValue))<input type="hidden" name="k" value="{{ $codeValue }}">@endif
+          <fieldset @disabled($codeState === 'preview') style="border:0;padding:0;margin:0;min-width:0;display:grid;gap:10px">
           @if($formSetting->show_name)<div class="field"><label for="lead-name"><span class="dot"></span>Nama Lengkap</label><input id="lead-name" name="name" type="text" value="{{ old('name') }}" @required(true) autocomplete="name"></div>@endif
           @if($formSetting->show_whatsapp)<div class="field"><label for="lead-whatsapp"><span class="dot"></span>No. WhatsApp</label><input id="lead-whatsapp" name="whatsapp" type="tel" value="{{ old('whatsapp') }}" @required(true) autocomplete="tel" placeholder="08xxxxxxxxxx"></div>@endif
           @if($formSetting->show_city)<div class="field"><label for="lead-city"><span class="dot"></span>Kota</label><input id="lead-city" name="city" type="text" value="{{ old('city') }}" @required(true) autocomplete="address-level2"></div>@endif
@@ -472,7 +486,9 @@ function safeAssetUrl(value){
           @if($formSetting->show_instagram)<div class="field"><label for="lead-instagram"><span class="dot"></span>Media Sosial <span class="opt">(opsional)</span></label><input id="lead-instagram" name="instagram" type="text" value="{{ old('instagram') }}"></div>@endif
           @if($formSetting->require_consent)<div class="checkbox-row"><input id="lead-consent" name="consent" value="1" type="checkbox" required><label for="lead-consent">{{ $formSetting->consent_text }}</label></div>@endif
           <button type="submit" class="btn-primary">JOIN NLUCK SOCIETY</button>
+          </fieldset>
         </form>
+        @endif
       </div>
     </div>
   </section>
