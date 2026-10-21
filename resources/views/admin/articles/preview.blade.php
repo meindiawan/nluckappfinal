@@ -18,6 +18,6 @@
         <a href="{{ route('admin.articles.studio', $article) }}">← Kembali ke Studio</a>
     </div>
 
-    @include('articles.studio-render', ['article' => $article, 'design' => $design, 'formSetting' => $formSetting])
+    @include('articles.studio-render', ['article' => $article, 'design' => $design, 'formSetting' => $formSetting, 'codeState' => 'preview'])
 </body>
 </html>

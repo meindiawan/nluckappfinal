@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\ArticleCode;
 use App\Models\ArticleFormSetting;
 use App\Models\ArticleLead;
 use App\Models\WhatsAppSetting;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ArticleLeadController extends Controller
 {
@@ -18,6 +20,13 @@ class ArticleLeadController extends Controller
             ->where('status', 'published')
             ->where(fn ($q) => $q->whereNull('published_at')->orWhere('published_at', '<=', now()))
             ->firstOrFail();
+
+        // QR sekali pakai: tanpa QR valid & belum terpakai, pendaftaran ditolak.
+        $rawCode = $request->input('k');
+        [$codeState, $qrCode] = ArticleCode::resolveFor($article, $rawCode);
+        if (! in_array($codeState, ['open', 'valid'], true)) {
+            return redirect()->route('articles.show', ['slug' => $article->slug, 'k' => $rawCode]);
+        }
 
         $setting = ArticleFormSetting::current();
 
@@ -64,7 +73,37 @@ class ArticleLeadController extends Controller
             'ip_address' => $request->ip(),
         ], $data);
 
-        $lead = ArticleLead::create($data);
+        $waSetting = WhatsAppSetting::current();
+
+        // Jangan menghanguskan QR kalau pelanggan belum bisa diarahkan ke grup.
+        if ($qrCode && ! $waSetting->group_link) {
+            return back()->withInput()->withErrors([
+                'group' => 'Link grup WhatsApp belum diatur admin. QR Anda belum terpakai, silakan coba lagi nanti.',
+            ]);
+        }
+
+        // Klaim QR + simpan data dalam satu transaksi. Klaim bersifat atomik (UPDATE ... WHERE used_at IS NULL),
+        // jadi dua pengiriman bersamaan dengan QR yang sama hanya satu yang berhasil.
+        $lead = DB::transaction(function () use ($qrCode, $data) {
+            if ($qrCode) {
+                $claimed = ArticleCode::whereKey($qrCode->id)->unused()->update(['used_at' => now()]);
+                if (! $claimed) {
+                    return null;
+                }
+            }
+
+            $lead = ArticleLead::create($data);
+
+            if ($qrCode) {
+                ArticleCode::whereKey($qrCode->id)->update(['lead_id' => $lead->id]);
+            }
+
+            return $lead;
+        });
+
+        if (! $lead) {
+            return redirect()->route('articles.show', ['slug' => $article->slug, 'k' => $rawCode]);
+        }
 
         // Keep the lead id in session for the verification/analytics flow.
         $request->session()->put('nluck_lead_id', $lead->id);
@@ -72,7 +111,7 @@ class ArticleLeadController extends Controller
         // The requested customer journey is immediate: successful form submission
         // goes straight to the configured WhatsApp Group. We still record the click
         // here so no intermediate page can prevent the redirect.
-        $setting = WhatsAppSetting::current();
+        $setting = $waSetting;
         if ($setting->group_link) {
             $lead->forceFill(['whatsapp_clicked_at' => now()])->save();
             return redirect()->away($setting->group_link);

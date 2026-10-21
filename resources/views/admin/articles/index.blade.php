@@ -59,7 +59,7 @@
               <a class="catalog-btn" target="_blank" href="{{ route('articles.show', $article) }}">Lihat</a>
             @endif
             <a class="catalog-btn" href="{{ route('admin.articles.edit', $article) }}">Edit</a>
-            <a class="catalog-btn" href="{{ route('admin.articles.qr', $article) }}">QR</a>
+            <a class="catalog-btn" href="{{ route('admin.articles.qr', $article) }}" title="QR artikel">{{ config('nluck.require_code') ? 'QR · '.$article->codes_unused_count : 'QR' }}</a>
             <div class="more-actions">
               <button type="button" class="more-btn" aria-label="Aksi artikel" onclick="this.nextElementSibling.classList.toggle('open')">•••</button>
               <div class="more-menu">
